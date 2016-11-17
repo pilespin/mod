@@ -1,13 +1,18 @@
 
 #include <project.hpp>
 #include "Sdl.hpp"
+#include "Parse.hpp"
 
 int main()
 {
 	try
 	{
-		Sdl s = Sdl();
+		Sdl 	s = Sdl();
+		Parse	p = Parse();
+
 		s.init();
+		p.readFile("./data/demo5.mod1");
+		p.printData();
 
 		while (1)
 		{
