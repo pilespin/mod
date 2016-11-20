@@ -2,6 +2,7 @@
 #pragma once
 
 #include <project.hpp>
+#include "Map.hpp"
 #include <SDL2/SDL.h>
 #include "SDL2/SDL_image.h"
 
@@ -21,7 +22,9 @@ public:
 	void	init();
 	void 	getKey();
 	void	quit();
-	void	draw();
+	void	draw(std::vector<std::vector<int>> map, Map m);
+	void	drawRectangle(int posX, int posY, int sizeX, int sizeY);
+
 
 	class Error : public std::exception {
 	public:
@@ -46,7 +49,7 @@ private:
 
 	std::map<char, void (Sdl::*)()> 		keymap;
 	std::map< std::string, SDL_Surface * > 	img;
-	
+
 	int 			_val;
 	SDL_Window 		*window;
 	SDL_Renderer	*renderer;

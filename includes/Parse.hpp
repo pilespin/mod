@@ -14,6 +14,8 @@ public:
 	Parse(Parse const &src);
 	Parse &operator=(Parse const &rhs);
 
+	std::vector<Vector>	getPointOfMap();
+
 	int			getValue() const;
 	void		empty();
 

@@ -6,7 +6,6 @@
 class Vector {
 
 public:
-	Vector();
 	Vector(int x, int y, int z);
 	~Vector();
 	Vector(Vector const &src);
@@ -25,6 +24,7 @@ public:
 	};
 
 public:
+	Vector();
 	int _val;
 	int x;
 	int y;

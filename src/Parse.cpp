@@ -8,6 +8,8 @@ Parse::~Parse()						{}
 
 Parse::Parse(Parse const &src)	{	
 	this->_val = src._val;
+	// this->file = src.file;
+	this->vector = src.vector;
 }
 
 Parse	&Parse::operator=(Parse const &rhs) {
@@ -15,6 +17,8 @@ Parse	&Parse::operator=(Parse const &rhs) {
 	if (this != &rhs)
 	{
 		this->_val = rhs._val;
+		// this->file = rhs.file;
+		this->vector = rhs.vector;
 	}
 	return (*this);
 }
@@ -24,12 +28,11 @@ std::ostream &operator<<(std::ostream &o, Parse &c) {
 	return (o);
 }
 ///////////////////////////////////////////////////////////////////////////////
-int		Parse::getValue() const	{	return (this->_val);	}
+int					Parse::getValue() const	{	return (this->_val);	}
+std::vector<Vector>	Parse::getPointOfMap() 		{	return (this->vector);	}
 ///////////////////////////////////////////////////////////////////////////////
 
 void	Parse::parseLine(std::string line) {
-
-	// std::cout << "line: " << line << std::endl;
 
 	std::smatch res;
 
@@ -41,8 +44,6 @@ void	Parse::parseLine(std::string line) {
 			++i )
 		{
 			res = *i;
-			// std::cout << "regex: " << res[1] << "," << res[2] << "," << res[3] << std::endl;
-			// if (std::is_numeric(res[1]))
 			this->vector.push_back(Vector(std::stoi(res[1]), std::stoi(res[2]), std::stoi(res[3])));
 		}
 	}

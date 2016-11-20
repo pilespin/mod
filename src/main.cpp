@@ -1,6 +1,7 @@
 
 #include <project.hpp>
 #include "Sdl.hpp"
+#include "Map.hpp"
 #include "Parse.hpp"
 
 int main()
@@ -12,14 +13,19 @@ int main()
 
 		s.init();
 		p.readFile("./data/demo5.mod1");
-		p.printData();
+		// p.printData();
+
+		Map		m = Map(p.getPointOfMap(), 20000, 20000, 500);
+		m.printMap();
 
 		while (1)
 		{
-			s.draw();
+		// std::cout << "Pass" << std::endl;
+
+			s.draw(m.getMap(), m);
 			s.getKey();
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+			std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		}
 	}
 	catch (std::exception &e)

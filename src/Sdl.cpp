@@ -1,31 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Sdl.cpp                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: pilespin <pilespin@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/10/08 20:42:26 by pilespin          #+#    #+#             */
-/*   Updated: 2016/10/18 19:32:44 by pilespin         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include <project.hpp>
 #include "Sdl.hpp"
-
-static double  ft_utime()
-{
-	int             sec;
-	double          micro;
-	struct timeval  tv;
-
-	gettimeofday(&tv, NULL);
-	sec = tv.tv_sec;
-	micro = tv.tv_usec;
-	micro /= 1000000;
-	micro += sec;
-	return (micro);
-}
 
 ///////////////////////////////   KEY   ///////////////////////////////////////
 void 	Sdl::moveToEscape() 		{	throw Error("Goodbye");	}
@@ -33,10 +8,10 @@ void 	Sdl::moveToEscape() 		{	throw Error("Goodbye");	}
 
 Sdl::Sdl() {
 	this->_val = 0;
-	this->windowSizeX = 640;
-	this->windowSizeY = 480;
+	this->windowSizeX = 800;
+	this->windowSizeY = 800;
 	this->windowName = "Hello";
-	this->last_time = ft_utime();
+	this->last_time = mylib::utime();
 	this->window = NULL;
 	this->renderer = NULL;
 }
@@ -50,7 +25,7 @@ Sdl::~Sdl() {
 }
 
 Sdl::Sdl(Sdl const &src)	{
-(void)src;		
+	(void)src;		
 }
 
 Sdl	&Sdl::operator=(Sdl const &rhs) {
@@ -104,14 +79,15 @@ void	Sdl::init() {
 
 	this->keymap[SDLK_ESCAPE]			= &Sdl::moveToEscape;
 
+	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
 	this->setWindowSize(this->windowSizeX, this->windowSizeY);
 	this->setWindowName("mod");
 	this->createWindow();
 	this->createRenderer();
-    SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
-    
+    // SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
+
     // this->loadImage("img/squareyellow.png", "squareyellow");
 }
 
@@ -139,12 +115,41 @@ void 	Sdl::getKey(void) {
 	}
 }
 
-void	Sdl::draw() {
+void	Sdl::draw(std::vector<std::vector<int>> map, Map m) {
+	(void)map;
+	(void)m;
+	int sizeX = this->windowSizeX / m.getMapSizeX();
+	int sizeY = this->windowSizeY / m.getMapSizeY();
 
-	SDL_RenderClear(this->getRenderer());
+    SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
+    SDL_RenderClear(this->getRenderer());
+    for (int y = 0; y != m.getMapSizeY(); y++)
+    {
+    	for (int x = 0; x != m.getMapSizeX(); x++)
+    	{
+    		SDL_SetRenderDrawColor( this->getRenderer(), m.getMap()[x][y] * 20, 0, 0, 0);
+    		drawRectangle(sizeX * x, sizeY * y, sizeX, sizeY);
+    	}
+    }
 
+    // SDL_SetRenderDrawColor( this->getRenderer(), 0, 200, 200, 0);
+    // drawRectangle(50, 50, 50, 50);
 
-	SDL_RenderPresent(this->getRenderer());
+    // SDL_SetRenderDrawColor( this->getRenderer(), 200, 200, 0, 255);
+    // drawRectangle(200, 200, 50, 50);
+
+    SDL_RenderPresent(this->getRenderer());
+}
+
+void	Sdl::drawRectangle(int posX, int posY, int sizeX, int sizeY) {
+
+	SDL_Rect r;
+	r.x = posX;
+	r.y = posY;
+	r.w = sizeX;
+	r.h = sizeY;
+	SDL_RenderDrawRect(this->getRenderer(), &r);
+	SDL_RenderFillRect( this->getRenderer(), &r );
 }
 
 void	Sdl::createWindow() {
