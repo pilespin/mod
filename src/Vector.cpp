@@ -17,24 +17,24 @@ Vector::Vector(int x, int y, int z) 	{
 
 Vector::~Vector()						{}
 
-Vector::Vector(Vector const &src)	{	
-	this->_val = src._val;
-	this->x = src.x;
-	this->y = src.y;
-	this->z = src.z;
-}
+// Vector::Vector(Vector const &src)	{	
+// 	this->_val = src._val;
+// 	this->x = src.x;
+// 	this->y = src.y;
+// 	this->z = src.z;
+// }
 
-Vector	&Vector::operator=(Vector const &rhs) {
+// Vector	&Vector::operator=(Vector const &rhs) {
 
-	if (this != &rhs)
-	{
-		this->_val = rhs._val;
-		this->x = rhs.x;
-		this->y = rhs.y;
-		this->z = rhs.z;
-	}
-	return (*this);
-}
+// 	if (this != &rhs)
+// 	{
+// 		this->_val = rhs._val;
+// 		this->x = rhs.x;
+// 		this->y = rhs.y;
+// 		this->z = rhs.z;
+// 	}
+// 	return (*this);
+// }
 
 std::ostream &operator<<(std::ostream &o, Vector &c) {
 	o << "I'm Vector class " << c.getValue();

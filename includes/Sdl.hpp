@@ -11,8 +11,8 @@ class Sdl {
 public:
 	Sdl();
 	~Sdl();
-	Sdl(Sdl const &src);
-	Sdl &operator=(Sdl const &rhs);
+	// Sdl(Sdl const &src);
+	// Sdl &operator=(Sdl const &rhs);
 
 	int		getValue() const;
 
@@ -22,8 +22,10 @@ public:
 	void	init();
 	void 	getKey();
 	void	quit();
-	void	draw(std::vector<std::vector<int>> map, Map m);
+	void	draw(Map m);
 	void	drawRectangle(int posX, int posY, int sizeX, int sizeY);
+	void 	waterFixedDown();
+	void 	waterFixedUp();
 
 
 	class Error : public std::exception {
@@ -58,6 +60,7 @@ private:
 	int 			windowSizeX;
 	int 			windowSizeY;
 	double			last_time;
+	int 			waterPercent;
 };
 
 std::ostream &operator<<(std::ostream &o, Sdl &c);

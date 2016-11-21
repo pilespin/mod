@@ -6,29 +6,30 @@ Parse::Parse() 						{	this->_val = 0;	}
 
 Parse::~Parse()						{}
 
-Parse::Parse(Parse const &src)	{	
-	this->_val = src._val;
+Parse::Parse(Parse const &src)	{ 
+	static_cast<void>(src);
+	// this->_val = src._val;
 	// this->file = src.file;
-	this->vector = src.vector;
+	// this->vector = src.vector;
 }
 
-Parse	&Parse::operator=(Parse const &rhs) {
+// Parse	&Parse::operator=(Parse const &rhs) {
 
-	if (this != &rhs)
-	{
-		this->_val = rhs._val;
-		// this->file = rhs.file;
-		this->vector = rhs.vector;
-	}
-	return (*this);
-}
+// 	if (this != &rhs)
+// 	{
+// 		this->_val = rhs._val;
+// 		// this->file = rhs.file;
+// 		this->vector = rhs.vector;
+// 	}
+// 	return (*this);
+// }
 
 std::ostream &operator<<(std::ostream &o, Parse &c) {
 	o << "I'm Parse class " << c.getValue();
 	return (o);
 }
 ///////////////////////////////////////////////////////////////////////////////
-int					Parse::getValue() const	{	return (this->_val);	}
+int					Parse::getValue() const		{	return (this->_val);	}
 std::vector<Vector>	Parse::getPointOfMap() 		{	return (this->vector);	}
 ///////////////////////////////////////////////////////////////////////////////
 

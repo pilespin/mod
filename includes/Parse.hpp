@@ -12,7 +12,7 @@ public:
 	Parse();
 	~Parse();
 	Parse(Parse const &src);
-	Parse &operator=(Parse const &rhs);
+	// Parse &operator=(Parse const &rhs);
 
 	std::vector<Vector>	getPointOfMap();
 

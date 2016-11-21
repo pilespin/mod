@@ -34,5 +34,6 @@
 mod
 
 # Others
+SDL2-2.0.5*
 the_leaks
 SDL/*

@@ -11,18 +11,19 @@ int main()
 		Sdl 	s = Sdl();
 		Parse	p = Parse();
 
+
 		s.init();
-		p.readFile("./data/demo5.mod1");
+		p.readFile("./data/demo4.mod1");
 		// p.printData();
 
-		Map		m = Map(p.getPointOfMap(), 20000, 20000, 500);
-		m.printMap();
+		Map		m = Map(p.getPointOfMap(), 20000, 20000, 50);
+		// m.printMap();
 
 		while (1)
 		{
 		// std::cout << "Pass" << std::endl;
 
-			s.draw(m.getMap(), m);
+			s.draw(m);
 			s.getKey();
 
 			std::this_thread::sleep_for(std::chrono::milliseconds(1));

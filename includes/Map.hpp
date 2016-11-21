@@ -14,10 +14,12 @@ public:
 
 	void		assignMap(Vector v);
 	void 		initMap(int nb = 0);
+	void 		placePoint();
 	void		printMap();
 	int			getValue() const;
 	int			getMapSizeX() const;
 	int			getMapSizeY() const;
+	int 		getZMax() const;
 	void		empty();
 
 	const std::vector<std::vector<int>>	&getMap() const;	
@@ -34,7 +36,8 @@ public:
 private:
 	Map();
 
-	std::vector<std::vector<int>> map;
+	std::vector<std::vector<int>>	map;
+	std::vector<Vector>				point;
 
 	int _val;
 	int mapSizeX;

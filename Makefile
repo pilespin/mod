@@ -83,7 +83,7 @@ re: fclean all
 
 run:
 	@clear
-	@make
+	@make no
 	@./$(NAME)
 
 leaks:

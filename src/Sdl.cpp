@@ -4,6 +4,14 @@
 
 ///////////////////////////////   KEY   ///////////////////////////////////////
 void 	Sdl::moveToEscape() 		{	throw Error("Goodbye");	}
+void 	Sdl::waterFixedUp() 		{	
+	if (this->waterPercent < 100)
+		this->waterPercent++;	
+}
+void 	Sdl::waterFixedDown() 		{	
+	if (this->waterPercent > 0)
+		this->waterPercent--;
+}
 ///////////////////////////////   KEY   ///////////////////////////////////////
 
 Sdl::Sdl() {
@@ -14,6 +22,7 @@ Sdl::Sdl() {
 	this->last_time = mylib::utime();
 	this->window = NULL;
 	this->renderer = NULL;
+	this->waterPercent = 5;
 }
 
 Sdl::~Sdl() {
@@ -24,17 +33,27 @@ Sdl::~Sdl() {
 	this->quit();
 }
 
-Sdl::Sdl(Sdl const &src)	{
-	(void)src;		
-}
+// Sdl::Sdl(Sdl const &src)	{
+// 	this->keymap = src.keymap;
+// 	this->img = src.img;
 
-Sdl	&Sdl::operator=(Sdl const &rhs) {
+// 	this->_val = src._val;
+// 	this->window = src.window;
+// 	this->renderer = src.renderer;
+// 	this->windowName = src.windowName;
+// 	this->squareSize = src.squareSize;
+// 	this->windowSizeX = src.windowSizeX;
+// 	this->windowSizeY = src.windowSizeY;
+// 	this->last_time = src.last_time;		
+// }
 
-	if (this != &rhs)
-	{
-	}
-	return (*this);
-}
+// Sdl	&Sdl::operator=(Sdl const &rhs) {
+
+// 	if (this != &rhs)
+// 	{
+// 	}
+// 	return (*this);
+// }
 
 std::ostream &operator<<(std::ostream &o, Sdl &c) {
 	o << "Sdl: " << c.getValue() << " ";
@@ -78,6 +97,8 @@ void			Sdl::setWindowSize(int x, int y) {
 void	Sdl::init() {
 
 	this->keymap[SDLK_ESCAPE]			= &Sdl::moveToEscape;
+	this->keymap[SDL_SCANCODE_UP]		= &Sdl::waterFixedUp;
+	this->keymap[SDL_SCANCODE_DOWN]		= &Sdl::waterFixedDown;
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Init(SDL_INIT_VIDEO);
@@ -86,7 +107,7 @@ void	Sdl::init() {
 	this->setWindowName("mod");
 	this->createWindow();
 	this->createRenderer();
-    // SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
+    SDL_SetRenderDrawColor(this->getRenderer(), 20, 20, 255, 255); //BackGround
 
     // this->loadImage("img/squareyellow.png", "squareyellow");
 }
@@ -115,28 +136,30 @@ void 	Sdl::getKey(void) {
 	}
 }
 
-void	Sdl::draw(std::vector<std::vector<int>> map, Map m) {
-	(void)map;
-	(void)m;
+void	Sdl::draw(Map m) {
+
 	int sizeX = this->windowSizeX / m.getMapSizeX();
 	int sizeY = this->windowSizeY / m.getMapSizeY();
 
+	SDL_RenderClear(this->getRenderer());
     SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
-    SDL_RenderClear(this->getRenderer());
+
+    int maxZ = m.getZMax();
+
     for (int y = 0; y != m.getMapSizeY(); y++)
     {
     	for (int x = 0; x != m.getMapSizeX(); x++)
     	{
-    		SDL_SetRenderDrawColor( this->getRenderer(), m.getMap()[x][y] * 20, 0, 0, 0);
+    		int zColor	= mylib::ratio(255, maxZ, m.getMap()[x][y]);
+    		int water 	= mylib::ratio(100, maxZ, m.getMap()[x][y]);
+
+    		if (water <= this->waterPercent)
+    			SDL_SetRenderDrawColor(this->getRenderer(), 0, 0, 255, 0);
+    		else
+    			SDL_SetRenderDrawColor(this->getRenderer(), zColor, 0, 0, 0);
     		drawRectangle(sizeX * x, sizeY * y, sizeX, sizeY);
     	}
     }
-
-    // SDL_SetRenderDrawColor( this->getRenderer(), 0, 200, 200, 0);
-    // drawRectangle(50, 50, 50, 50);
-
-    // SDL_SetRenderDrawColor( this->getRenderer(), 200, 200, 0, 255);
-    // drawRectangle(200, 200, 50, 50);
 
     SDL_RenderPresent(this->getRenderer());
 }
@@ -144,12 +167,13 @@ void	Sdl::draw(std::vector<std::vector<int>> map, Map m) {
 void	Sdl::drawRectangle(int posX, int posY, int sizeX, int sizeY) {
 
 	SDL_Rect r;
+
 	r.x = posX;
 	r.y = posY;
 	r.w = sizeX;
 	r.h = sizeY;
 	SDL_RenderDrawRect(this->getRenderer(), &r);
-	SDL_RenderFillRect( this->getRenderer(), &r );
+	SDL_RenderFillRect(this->getRenderer(), &r);
 }
 
 void	Sdl::createWindow() {

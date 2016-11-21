@@ -8,8 +8,8 @@ class Vector {
 public:
 	Vector(int x, int y, int z);
 	~Vector();
-	Vector(Vector const &src);
-	Vector &operator=(Vector const &rhs);
+	// Vector(Vector const &src);
+	// Vector &operator=(Vector const &rhs);
 
 	int			getValue() const;
 	void		empty();
