@@ -26,6 +26,11 @@ std::ostream &operator<<(std::ostream &o, mylib &c) {
 int		mylib::getValue() const	{	return (this->_val);	}
 ///////////////////////////////////////////////////////////////////////////////
 
+void		mylib::sleep(int ms) {
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+}
+
 int			mylib::ratio(int maxVal1, int maxVal2, int yourVal) {
 
 	return (maxVal1 * yourVal) / maxVal2;

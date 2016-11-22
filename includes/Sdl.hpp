@@ -38,6 +38,7 @@ public:
 
 private:
 
+	void	initKey();
 	void 	moveToEscape();
 
 	SDL_Window		*getWindow() const;
@@ -48,6 +49,10 @@ private:
 	void			DrawImageInRenderer(SDL_Surface *img, int x, int y);
 	void			createWindow();
 	void			createRenderer();
+
+	Vector			transform3dTo2d(Vector v);
+	void 			isometricViewAngleUp();
+	void 			isometricViewAngleDown();
 
 	std::map<char, void (Sdl::*)()> 		keymap;
 	std::map< std::string, SDL_Surface * > 	img;
@@ -61,6 +66,8 @@ private:
 	int 			windowSizeY;
 	double			last_time;
 	int 			waterPercent;
+
+	int IsometricViewAngle;
 };
 
 std::ostream &operator<<(std::ostream &o, Sdl &c);

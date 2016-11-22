@@ -12,7 +12,24 @@ void 	Sdl::waterFixedDown() 		{
 	if (this->waterPercent > 0)
 		this->waterPercent--;
 }
+void 	Sdl::isometricViewAngleUp() 		{	
+	if (this->IsometricViewAngle < 360)
+		this->IsometricViewAngle++;
+}
+void 	Sdl::isometricViewAngleDown() 		{	
+	if (this->IsometricViewAngle > 0)
+		this->IsometricViewAngle--;
+}
 ///////////////////////////////   KEY   ///////////////////////////////////////
+
+void	Sdl::initKey() {
+
+	this->keymap[SDLK_ESCAPE]			= &Sdl::moveToEscape;
+	this->keymap[SDL_SCANCODE_UP]		= &Sdl::waterFixedUp;
+	this->keymap[SDL_SCANCODE_DOWN]		= &Sdl::waterFixedDown;
+	this->keymap[SDL_SCANCODE_RIGHT]	= &Sdl::isometricViewAngleUp;
+	this->keymap[SDL_SCANCODE_LEFT]		= &Sdl::isometricViewAngleDown;
+}
 
 Sdl::Sdl() {
 	this->_val = 0;
@@ -23,6 +40,7 @@ Sdl::Sdl() {
 	this->window = NULL;
 	this->renderer = NULL;
 	this->waterPercent = 5;
+	this->IsometricViewAngle = 135;
 }
 
 Sdl::~Sdl() {
@@ -96,10 +114,6 @@ void			Sdl::setWindowSize(int x, int y) {
 
 void	Sdl::init() {
 
-	this->keymap[SDLK_ESCAPE]			= &Sdl::moveToEscape;
-	this->keymap[SDL_SCANCODE_UP]		= &Sdl::waterFixedUp;
-	this->keymap[SDL_SCANCODE_DOWN]		= &Sdl::waterFixedDown;
-
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
@@ -107,6 +121,7 @@ void	Sdl::init() {
 	this->setWindowName("mod");
 	this->createWindow();
 	this->createRenderer();
+	this->initKey();
     SDL_SetRenderDrawColor(this->getRenderer(), 20, 20, 255, 255); //BackGround
 
     // this->loadImage("img/squareyellow.png", "squareyellow");
@@ -157,12 +172,51 @@ void	Sdl::draw(Map m) {
     			SDL_SetRenderDrawColor(this->getRenderer(), 0, 0, 255, 0);
     		else
     			SDL_SetRenderDrawColor(this->getRenderer(), zColor, 0, 0, 0);
-    		drawRectangle(sizeX * x, sizeY * y, sizeX, sizeY);
+
+    		Vector tmp = transform3dTo2d(Vector(x, y, m.getMap()[x][y]));
+    		drawRectangle(tmp.x + (this->windowSizeX * 0.8), tmp.y + (this->windowSizeY / 2), sizeX, sizeY);
+    		// drawRectangle(sizeX * x, sizeY * y, sizeX, sizeY);
+
     	}
     }
 
     SDL_RenderPresent(this->getRenderer());
 }
+
+Vector	Sdl::transform3dTo2d(Vector v) {
+
+    //I've found a way to project 3D into Isometric 2D.
+
+	// I Supposed a angle for Isometric View and of course, a 3D point to project like
+
+	// Dim IsometricViewAngle As Integer = 30
+	// int IsometricViewAngle = 90;
+	// Vector v = Vector(dx,dy1,dz);
+
+	// which dx, dy and dz are your custom values. 
+	// then I had to calculate a Delta Value for X and Y Increments and Decrements like
+
+	double XDelta = std::cos(IsometricViewAngle * M_PI / 360);
+	double YDelta = std::sin(IsometricViewAngle * M_PI / 360);
+	double ZDelta = 0.8;
+
+	// OK, that it, now I'm going to Project 3D points into 2D point:
+
+	double X = (-v.x * XDelta) + (-v.y * YDelta);
+	double Y = (-v.x * XDelta) + (-v.z * ZDelta);
+
+	// Dim ProjectedPoint As New Point(X,Y)
+	return (Vector(X, Y, 0));
+
+}
+
+// Vector	Sdl::transform3dTo2d(Vector v) {
+
+// 	double X = v.x / (v.z + 0.01);
+// 	double Y = v.y / (v.z + 0.01);
+
+// 	return (Vector(X, Y, 0));
+// }
 
 void	Sdl::drawRectangle(int posX, int posY, int sizeX, int sizeY) {
 

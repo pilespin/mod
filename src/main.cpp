@@ -13,7 +13,7 @@ int main()
 
 
 		s.init();
-		p.readFile("./data/demo4.mod1");
+		p.readFile("./data/demo5.mod1");
 		// p.printData();
 
 		Map		m = Map(p.getPointOfMap(), 20000, 20000, 50);
@@ -26,7 +26,7 @@ int main()
 			s.draw(m);
 			s.getKey();
 
-			std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    		mylib::sleep(1);
 		}
 	}
 	catch (std::exception &e)
