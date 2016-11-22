@@ -1,7 +1,6 @@
 
 #include <project.hpp>
-#include "Sdl.hpp"
-#include "Parse.hpp"
+
 
 int main()
 {
@@ -11,12 +10,14 @@ int main()
 		Parse	p = Parse();
 
 		s.init();
-		p.readFile("./data/demo5.mod1");
+		p.readFile("./data/demo1.mod1");
 		p.printData();
+		Map		map(p);		
+		map.put_map();
 
 		while (1)
 		{
-			s.draw();
+			s.draw(map);
 			s.getKey();
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1));

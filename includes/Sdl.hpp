@@ -17,11 +17,12 @@ public:
 
 	void	setWindowSize(int y, int x);
 	void	setWindowName(std::string name);
+	void 	draw_pixel(int x, int y);
 
 	void	init();
 	void 	getKey();
 	void	quit();
-	void	draw();
+	void	draw(Map map);
 
 	class Error : public std::exception {
 	public:

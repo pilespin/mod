@@ -77,7 +77,7 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME)
-	@rm -f $(PATH_SDL)
+	@rm -rf $(PATH_SDL)
 
 re: fclean all
 

@@ -8,12 +8,24 @@ Parse::~Parse()						{}
 
 Parse::Parse(Parse const &src)	{	
 	this->_val = src._val;
+	this->vector =src.vector;
+}
+
+Vector Parse::operator[](int it) {
+	return this->vector[it];
+
+}
+int Parse::size()const 
+{
+	std::cout<<this->vector.size()<<std::endl;
+	return (static_cast<int>(this->vector.size()));
 }
 
 Parse	&Parse::operator=(Parse const &rhs) {
 
 	if (this != &rhs)
 	{
+		this->vector = rhs.vector;
 		this->_val = rhs._val;
 	}
 	return (*this);
@@ -43,7 +55,7 @@ void	Parse::parseLine(std::string line) {
 			res = *i;
 			// std::cout << "regex: " << res[1] << "," << res[2] << "," << res[3] << std::endl;
 			// if (std::is_numeric(res[1]))
-			this->vector.push_back(Vector(std::stoi(res[1]), std::stoi(res[2]), std::stoi(res[3])));
+			this->vector.push_back(Vector(std::stoi(res[1])*MAX_SIZE/ECHELLE, std::stoi(res[2])*MAX_SIZE/ECHELLE, std::stoi(res[3])*MAX_SIZE/ECHELLE));
 		}
 	}
 }
@@ -53,7 +65,7 @@ void	Parse::parseLine(std::string line) {
 void	Parse::printData() {
 
 	std::cout << "---------------------" << std::endl;
-	std::cout << "Vector:" << std::endl;
+	std::cout << "Vector:" << this->vector.size()<< std::endl;
 	for (auto it = this->vector.begin(); it != this->vector.end(); it++) {
 		std::cout << "Vector: x: " << it->x << " y: " << it->y << " z: " << it->z << std::endl;
 	}

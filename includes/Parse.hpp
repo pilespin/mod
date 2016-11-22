@@ -13,9 +13,10 @@ public:
 	~Parse();
 	Parse(Parse const &src);
 	Parse &operator=(Parse const &rhs);
-
+	Vector	operator[](int it);		
 	int			getValue() const;
 	void		empty();
+	int			size() const ;
 
 	void 		parseLine(std::string line);
 	void		closeFile();

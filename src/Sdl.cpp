@@ -33,8 +33,8 @@ void 	Sdl::moveToEscape() 		{	throw Error("Goodbye");	}
 
 Sdl::Sdl() {
 	this->_val = 0;
-	this->windowSizeX = 640;
-	this->windowSizeY = 480;
+	this->windowSizeX = SCREEN_SIZE;
+	this->windowSizeY = SCREEN_SIZE;
 	this->windowName = "Hello";
 	this->last_time = ft_utime();
 	this->window = NULL;
@@ -110,7 +110,7 @@ void	Sdl::init() {
 	this->setWindowName("mod");
 	this->createWindow();
 	this->createRenderer();
-    SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
+    SDL_SetRenderDrawColor(this->getRenderer(), 175, 0, 0, 0); //BackGround
     
     // this->loadImage("img/squareyellow.png", "squareyellow");
 }
@@ -139,12 +139,63 @@ void 	Sdl::getKey(void) {
 	}
 }
 
-void	Sdl::draw() {
+void 	Sdl::draw_pixel(int x, int y)
+{
+  	SDL_Rect r;
 
+	r.x = x;
+	r.y = y;
+	r.w = 20;
+	r.h = 10;
+	SDL_RenderDrawRect(this->renderer, &r);
+	SDL_RenderFillRect(this->renderer, &r);
+}
+
+int			ratio(int maxVal1, int maxVal2, double yourVal) {
+
+	return (maxVal1 * static_cast<int>(yourVal) / maxVal2);
+}
+
+void	Sdl::draw(Map m) {
+
+	int x;
+	int y;
 	SDL_RenderClear(this->getRenderer());
+	// (void)m;
+	x = 0;
+    // SDL_SetRenderDrawColor(this->getRenderer(), 0, 255-100, 255-100, 255-100);
+	// draw_pixel(5, 5);
+    // SDL_SetRenderDrawColor(this->getRenderer(), 0, 0, 0, 0);
 
 
-	SDL_RenderPresent(this->getRenderer());
+	while (x < MAX_SIZE)
+	{
+		y = 0;
+		while (y < MAX_SIZE)
+		{
+			if (y == 250)
+				printf("%lf\n", m.access(x,y));
+			// if (m.access(x, y) < 100)
+   //  			SDL_SetRenderDrawColor(this->getRenderer(), 0, 255-100, 255-100,  0);
+   //  		else if (m.access(x, y) < 200)
+   //  			SDL_SetRenderDrawColor(this->getRenderer(), 0, 255-60, 255-60, 0);
+   //  		else if (m.access(x, y) < 300)
+   //  			SDL_SetRenderDrawColor(this->getRenderer(), 0, 255-40, 255-40, 0);
+   //  		else if (m.access(x, y) < 400)
+   //  			SDL_SetRenderDrawColor(this->getRenderer(), 0, 255-20, 255-20, 0);
+   //  		else
+    			SDL_SetRenderDrawColor(this->getRenderer(), ratio(215, MAX_SIZE, m.access(x, y)), ratio(90, MAX_SIZE, m.access(x, y)), 0 , 250);
+    		draw_pixel(x, y);
+    		// return ;
+
+			y++;
+		}
+		x++;
+	}
+
+    SDL_SetRenderDrawColor(this->getRenderer(), 0, 0, 0, 0);
+	 SDL_RenderPresent(this->getRenderer());
+	 // while(1);
 }
 
 void	Sdl::createWindow() {
