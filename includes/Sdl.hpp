@@ -17,7 +17,7 @@ public:
 
 	void	setWindowSize(int y, int x);
 	void	setWindowName(std::string name);
-	void 	draw_pixel(int x, int y);
+	void 	draw_pixel(double x, double y, double h);
 
 	void	init();
 	void 	getKey();

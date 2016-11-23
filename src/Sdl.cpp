@@ -110,7 +110,7 @@ void	Sdl::init() {
 	this->setWindowName("mod");
 	this->createWindow();
 	this->createRenderer();
-    SDL_SetRenderDrawColor(this->getRenderer(), 175, 0, 0, 0); //BackGround
+    SDL_SetRenderDrawColor(this->getRenderer(), 0, 0, 0, 0); //BackGround
     
     // this->loadImage("img/squareyellow.png", "squareyellow");
 }
@@ -139,16 +139,39 @@ void 	Sdl::getKey(void) {
 	}
 }
 
-void 	Sdl::draw_pixel(int x, int y)
+void 	Sdl::draw_pixel(double x, double y, double h)
 {
-  	SDL_Rect r;
+	double IsometricViewAngle = 135;
 
-	r.x = x;
-	r.y = y;
-	r.w = 20;
-	r.h = 10;
-	SDL_RenderDrawRect(this->renderer, &r);
-	SDL_RenderFillRect(this->renderer, &r);
+
+	double XDelta = std::cos(IsometricViewAngle * M_PI / 360.0);
+	double YDelta = std::sin(IsometricViewAngle * M_PI / 360.0);
+	double ZDelta = 0.8;
+
+	// OK, that it, now I'm going to Project 3D points into 2D point:
+
+	double X = (-x * XDelta) + (-y * YDelta);
+	double Y = (-x * XDelta) + (-h * ZDelta);
+
+	// Dim ProjectedPoint As New Point(X,Y)
+	// return (Vector(X, Y, 0));
+
+  	SDL_Rect r;
+  	double i;
+  	(void)h;
+	r.x = X + SCREEN_SIZE;
+	r.y = Y + SCREEN_SIZE;
+	r.w = 1;
+	r.h = 1 ;
+	i = 0 ;
+	// while (i < h)
+	// {
+	// 	r.y--;
+	// 	i++;
+	// }
+		SDL_RenderDrawRect(this->renderer, &r);
+		SDL_RenderFillRect(this->renderer, &r);
+		
 }
 
 int			ratio(int maxVal1, int maxVal2, double yourVal) {
@@ -173,8 +196,8 @@ void	Sdl::draw(Map m) {
 		y = 0;
 		while (y < MAX_SIZE)
 		{
-			if (y == 250)
-				printf("%lf\n", m.access(x,y));
+			// if (y == 250)
+			// 	printf("%lf\n", m.access(x,y));
 			// if (m.access(x, y) < 100)
    //  			SDL_SetRenderDrawColor(this->getRenderer(), 0, 255-100, 255-100,  0);
    //  		else if (m.access(x, y) < 200)
@@ -185,7 +208,7 @@ void	Sdl::draw(Map m) {
    //  			SDL_SetRenderDrawColor(this->getRenderer(), 0, 255-20, 255-20, 0);
    //  		else
     			SDL_SetRenderDrawColor(this->getRenderer(), ratio(215, MAX_SIZE, m.access(x, y)), ratio(90, MAX_SIZE, m.access(x, y)), 0 , 250);
-    		draw_pixel(x, y);
+    		draw_pixel(static_cast<double>(x), static_cast<double>(y), m.access(x, y));
     		// return ;
 
 			y++;
@@ -195,6 +218,7 @@ void	Sdl::draw(Map m) {
 
     SDL_SetRenderDrawColor(this->getRenderer(), 0, 0, 0, 0);
 	 SDL_RenderPresent(this->getRenderer());
+
 	 // while(1);
 }
 
