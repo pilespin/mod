@@ -38,7 +38,7 @@ void 	Map::incre_point_next(double xo, double yo, double zo , double a, double i
 			
 			nd  = sqrt(pow(x - xo, 2) + pow(y - yo, 2));
 			double h = static_cast<double>(nd * nd) * a + zo;
-			printf("%lf  ", h);
+			// printf("%lf  ", h);
 			if (this->map[static_cast<int>(x)][static_cast<int>(y)] < h)
 				this->map[static_cast<int>(x)][static_cast<int>(y)] = h;
 			// if (h < MAX_SIZE / 3.0)
@@ -49,7 +49,7 @@ void 	Map::incre_point_next(double xo, double yo, double zo , double a, double i
 			// 	s.draw_pixel(x,y, 255,0,0);
 			y++;
 		}
-		printf("\n");
+		// printf("\n");
 		x++;
 	}
 }
@@ -72,18 +72,18 @@ Map::Map(Parse param) 		{
 	}
 	//double c = 0;
 	
-	double a = -static_cast<double>(MAX_SIZE) / (static_cast<double>(SIZE_TO_SEA) * static_cast<double>(SIZE_TO_SEA));
-	printf("%lf  %lf\n", a, 0.008);
+	// double a = -static_cast<double>(MAX_SIZE) / (static_cast<double>(SIZE_TO_SEA) * static_cast<double>(SIZE_TO_SEA));
+	// printf("%lf  %lf\n", a, 0.008);
 
 	i = 0;
-	double l= 0.0;
-	while ( l < 250.0)
-	{
-		double res = a * l * l + MAX_SIZE;
-		printf("%lf  %lf\n", res, 0.008);
-		l++;
-	}
-	std::cout<< "as: " << param.size() << std::endl;;
+	// double l= 0.0;
+	// while ( l < 250.0)
+	// {
+	// 	double res = a * l * l + MAX_SIZE;
+	// 	// printf("%lf  %lf\n", res, 0.008);
+	// 	l++;
+	// }
+	// std::cout<< "as: " << param.size() << std::endl;;
 	while (i < param.size())
 	{
 		double a = -static_cast<double>(param[i].z) / (static_cast<double>(SIZE_TO_SEA) * static_cast<double>(SIZE_TO_SEA));
@@ -91,7 +91,7 @@ Map::Map(Parse param) 		{
 		int y = param[i].y;
 		int z = param[i].z;
 		incre_point_next(x,y,z,a, 1);
-		this->put_map();
+		// this->put_map();
 		i++;
 	}
 }
@@ -112,8 +112,8 @@ Map::Map() 		{
 		this->map.push_back(v);
 		i++;
 	}
-	double a = MAX_SIZE / ((MAX_SIZE/2.0) * (MAX_SIZE/2.0));
-	printf("%lf  %lf\n", a, 0.008);
+	// double a = MAX_SIZE / ((MAX_SIZE/2.0) * (MAX_SIZE/2.0));
+	// printf("%lf  %lf\n", a, 0.008);
 
 }
 

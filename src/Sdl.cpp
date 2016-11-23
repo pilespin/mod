@@ -141,7 +141,7 @@ void 	Sdl::getKey(void) {
 
 void 	Sdl::draw_pixel(double x, double y, double h)
 {
-	double IsometricViewAngle = 135;
+	double IsometricViewAngle =130;
 
 
 	double XDelta = std::cos(IsometricViewAngle * M_PI / 360.0);
@@ -159,18 +159,56 @@ void 	Sdl::draw_pixel(double x, double y, double h)
   	SDL_Rect r;
   	double i;
   	(void)h;
-	r.x = X + SCREEN_SIZE;
-	r.y = Y + SCREEN_SIZE;
-	r.w = 1;
-	r.h = 1 ;
+	r.x = X + 500 -1;
+	r.y = Y + 500 -1;
+	r.w = 3;
+	r.h = 3 ;
 	i = 0 ;
-	// while (i < h)
-	// {
-	// 	r.y--;
-	// 	i++;
-	// }
-		SDL_RenderDrawRect(this->renderer, &r);
-		SDL_RenderFillRect(this->renderer, &r);
+	SDL_RenderDrawRect(this->renderer, &r);
+	SDL_RenderFillRect(this->renderer, &r);
+
+	// r.x += 1;
+	// r.y +=0; 
+	// r.w = 1;
+	// r.h = 1 ;
+	// i = 0 ;
+	// SDL_RenderDrawRect(this->renderer, &r);
+	// SDL_RenderFillRect(this->renderer, &r);
+
+	// 	r.x += 0;
+	// r.y +=-1; 
+	// r.w = 1;
+	// r.h = 1 ;
+	// i = 0 ;
+	// SDL_RenderDrawRect(this->renderer, &r);
+	// SDL_RenderFillRect(this->renderer, &r);
+
+	// r.x += -1;
+	// r.y +=0; 
+	// r.w = 1;
+	// r.h = 1 ;
+	// i = 0 ;
+	// SDL_RenderDrawRect(this->renderer, &r);
+	// SDL_RenderFillRect(this->renderer, &r);
+
+	// r.x += 1;
+	// r.y += 1; 
+	// r.w = 1;
+	// r.h = 1 ;
+	// i = 0 ;
+	// SDL_RenderDrawRect(this->renderer, &r);
+	// SDL_RenderFillRect(this->renderer, &r);
+
+	// r.x += -1;
+	// r.y +=-1; 
+	// r.w = 1;
+	// r.h = 1 ;
+	// i = 0 ;
+	// SDL_RenderDrawRect(this->renderer, &r);
+	// SDL_RenderFillRect(this->renderer, &r);
+
+
+
 		
 }
 
@@ -207,7 +245,7 @@ void	Sdl::draw(Map m) {
    //  		else if (m.access(x, y) < 400)
    //  			SDL_SetRenderDrawColor(this->getRenderer(), 0, 255-20, 255-20, 0);
    //  		else
-    			SDL_SetRenderDrawColor(this->getRenderer(), ratio(215, MAX_SIZE, m.access(x, y)), ratio(90, MAX_SIZE, m.access(x, y)), 0 , 250);
+    			SDL_SetRenderDrawColor(this->getRenderer(), ratio(215, MAX_SIZE, m.access(x, y))+50, 50+ratio(90, MAX_SIZE, m.access(x, y)), 0 , 250);
     		draw_pixel(static_cast<double>(x), static_cast<double>(y), m.access(x, y));
     		// return ;
 

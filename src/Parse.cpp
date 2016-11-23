@@ -55,7 +55,7 @@ void	Parse::parseLine(std::string line) {
 			res = *i;
 			// std::cout << "regex: " << res[1] << "," << res[2] << "," << res[3] << std::endl;
 			// if (std::is_numeric(res[1]))
-			this->vector.push_back(Vector(std::stoi(res[1])*MAX_SIZE/ECHELLE, std::stoi(res[2])*MAX_SIZE/ECHELLE, std::stoi(res[3])*MAX_SIZE/ECHELLE));
+			this->vector.push_back(Vector(std::stoi(res[1])*MAX_SIZE/ECHELLE, std::stoi(res[2])*MAX_SIZE/ECHELLE, std::stoi(res[3])*MAX_SIZE/(ECHELLE)));
 		}
 	}
 }
