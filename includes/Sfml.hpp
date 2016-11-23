@@ -30,7 +30,7 @@ public:
 
 private:
 	int _val;
-	sf::Window window;
+	sf::RenderWindow window;
 };
 
 std::ostream &operator<<(std::ostream &o, Sfml &c);
