@@ -10,7 +10,7 @@ int main()
 		Parse	p = Parse();
 
 		s.init();
-		p.readFile("./data/demo1.mod1");
+		p.readFile("./data/demo4.mod1");
 		p.printData();
 		Map		map(p);		
 		map.put_map();

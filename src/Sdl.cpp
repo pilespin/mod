@@ -29,6 +29,15 @@ static double  ft_utime()
 
 ///////////////////////////////   KEY   ///////////////////////////////////////
 void 	Sdl::moveToEscape() 		{	throw Error("Goodbye");	}
+
+void 	Sdl::isometricViewAngleUp() 		{	
+	if (this->IsometricViewAngle < 360)
+		this->IsometricViewAngle++;
+}
+void 	Sdl::isometricViewAngleDown() 		{	
+	if (this->IsometricViewAngle > 0)
+		this->IsometricViewAngle--;
+}
 ///////////////////////////////   KEY   ///////////////////////////////////////
 
 Sdl::Sdl() {
@@ -50,7 +59,7 @@ Sdl::~Sdl() {
 }
 
 Sdl::Sdl(Sdl const &src)	{
-(void)src;		
+	(void)src;		
 }
 
 Sdl	&Sdl::operator=(Sdl const &rhs) {
@@ -103,6 +112,8 @@ void			Sdl::setWindowSize(int x, int y) {
 void	Sdl::init() {
 
 	this->keymap[SDLK_ESCAPE]			= &Sdl::moveToEscape;
+	this->keymap[SDL_SCANCODE_RIGHT]	= &Sdl::isometricViewAngleUp;
+	this->keymap[SDL_SCANCODE_LEFT]		= &Sdl::isometricViewAngleDown;
 
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
@@ -110,6 +121,7 @@ void	Sdl::init() {
 	this->setWindowName("mod");
 	this->createWindow();
 	this->createRenderer();
+	this->IsometricViewAngle = 240;
     SDL_SetRenderDrawColor(this->getRenderer(), 0, 0, 0, 0); //BackGround
     
     // this->loadImage("img/squareyellow.png", "squareyellow");
@@ -141,11 +153,10 @@ void 	Sdl::getKey(void) {
 
 void 	Sdl::draw_pixel(double x, double y, double h)
 {
-	double IsometricViewAngle =130;
+	// double IsometricViewAngle =130;
 
-
-	double XDelta = std::cos(IsometricViewAngle * M_PI / 360.0);
-	double YDelta = std::sin(IsometricViewAngle * M_PI / 360.0);
+	double XDelta = std::cos(this->IsometricViewAngle * M_PI / 360.0);
+	double YDelta = std::sin(this->IsometricViewAngle * M_PI / 360.0);
 	double ZDelta = 0.8;
 
 	// OK, that it, now I'm going to Project 3D points into 2D point:
@@ -156,60 +167,17 @@ void 	Sdl::draw_pixel(double x, double y, double h)
 	// Dim ProjectedPoint As New Point(X,Y)
 	// return (Vector(X, Y, 0));
 
-  	SDL_Rect r;
-  	double i;
-  	(void)h;
-	r.x = X + 500 -1;
-	r.y = Y + 500 -1;
+	SDL_Rect r;
+	double i;
+	(void)h;
+	r.x = X + (SCREEN_SIZE / 2) -1;
+	r.y = Y + (SCREEN_SIZE / 2) -1;
 	r.w = 3;
 	r.h = 3 ;
 	i = 0 ;
 	SDL_RenderDrawRect(this->renderer, &r);
 	SDL_RenderFillRect(this->renderer, &r);
 
-	// r.x += 1;
-	// r.y +=0; 
-	// r.w = 1;
-	// r.h = 1 ;
-	// i = 0 ;
-	// SDL_RenderDrawRect(this->renderer, &r);
-	// SDL_RenderFillRect(this->renderer, &r);
-
-	// 	r.x += 0;
-	// r.y +=-1; 
-	// r.w = 1;
-	// r.h = 1 ;
-	// i = 0 ;
-	// SDL_RenderDrawRect(this->renderer, &r);
-	// SDL_RenderFillRect(this->renderer, &r);
-
-	// r.x += -1;
-	// r.y +=0; 
-	// r.w = 1;
-	// r.h = 1 ;
-	// i = 0 ;
-	// SDL_RenderDrawRect(this->renderer, &r);
-	// SDL_RenderFillRect(this->renderer, &r);
-
-	// r.x += 1;
-	// r.y += 1; 
-	// r.w = 1;
-	// r.h = 1 ;
-	// i = 0 ;
-	// SDL_RenderDrawRect(this->renderer, &r);
-	// SDL_RenderFillRect(this->renderer, &r);
-
-	// r.x += -1;
-	// r.y +=-1; 
-	// r.w = 1;
-	// r.h = 1 ;
-	// i = 0 ;
-	// SDL_RenderDrawRect(this->renderer, &r);
-	// SDL_RenderFillRect(this->renderer, &r);
-
-
-
-		
 }
 
 int			ratio(int maxVal1, int maxVal2, double yourVal) {
@@ -245,8 +213,8 @@ void	Sdl::draw(Map m) {
    //  		else if (m.access(x, y) < 400)
    //  			SDL_SetRenderDrawColor(this->getRenderer(), 0, 255-20, 255-20, 0);
    //  		else
-    			SDL_SetRenderDrawColor(this->getRenderer(), ratio(215, MAX_SIZE, m.access(x, y))+50, 50+ratio(90, MAX_SIZE, m.access(x, y)), 0 , 250);
-    		draw_pixel(static_cast<double>(x), static_cast<double>(y), m.access(x, y));
+			SDL_SetRenderDrawColor(this->getRenderer(), ratio(215, MAX_SIZE, m.access(x, y))+50, 50+ratio(90, MAX_SIZE, m.access(x, y)), 0 , 250);
+			draw_pixel(static_cast<double>(x), static_cast<double>(y), m.access(x, y));
     		// return ;
 
 			y++;
@@ -254,8 +222,8 @@ void	Sdl::draw(Map m) {
 		x++;
 	}
 
-    SDL_SetRenderDrawColor(this->getRenderer(), 0, 0, 0, 0);
-	 SDL_RenderPresent(this->getRenderer());
+	SDL_SetRenderDrawColor(this->getRenderer(), 0, 0, 0, 0);
+	SDL_RenderPresent(this->getRenderer());
 
 	 // while(1);
 }

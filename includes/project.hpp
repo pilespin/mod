@@ -20,8 +20,8 @@
 #include "Sdl.hpp"
 #include "Parse.hpp"
 
-#define MAX_SIZE 500
+#define MAX_SIZE 	500
 #define SCREEN_SIZE 1000
-#define ECHELLE 20000
+#define ECHELLE 	20000
 #define SIZE_TO_SEA 150
 

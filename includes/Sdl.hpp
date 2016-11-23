@@ -44,6 +44,8 @@ private:
 	void			DrawImageInRenderer(SDL_Surface *img, int x, int y);
 	void			createWindow();
 	void			createRenderer();
+	void 			isometricViewAngleUp();
+	void 			isometricViewAngleDown();
 
 	std::map<char, void (Sdl::*)()> 		keymap;
 	std::map< std::string, SDL_Surface * > 	img;
@@ -56,6 +58,7 @@ private:
 	int 			windowSizeX;
 	int 			windowSizeY;
 	double			last_time;
+	int 			IsometricViewAngle;
 };
 
 std::ostream &operator<<(std::ostream &o, Sdl &c);
