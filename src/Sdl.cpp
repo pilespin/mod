@@ -117,6 +117,7 @@ void	Sdl::init() {
 
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
+	// SDL_SetVideoMode(this->windowSizeX, this->windowSizeY, 32, SDL_OPENGL);
 	this->setWindowSize(this->windowSizeX, this->windowSizeY);
 	this->setWindowName("mod");
 	this->createWindow();
@@ -155,8 +156,8 @@ void 	Sdl::draw_pixel(double x, double y, double h)
 {
 	// double IsometricViewAngle =130;
 
-	double XDelta = std::cos(this->IsometricViewAngle * M_PI / 360.0);
-	double YDelta = std::sin(this->IsometricViewAngle * M_PI / 360.0);
+	double XDelta = std::cos(this->IsometricViewAngle * M_PI / 180.0);
+	double YDelta = std::sin(this->IsometricViewAngle * M_PI / 180.0);
 	double ZDelta = 0.8;
 
 	// OK, that it, now I'm going to Project 3D points into 2D point:
@@ -170,8 +171,8 @@ void 	Sdl::draw_pixel(double x, double y, double h)
 	SDL_Rect r;
 	double i;
 	(void)h;
-	r.x = X + (SCREEN_SIZE / 2) -1;
-	r.y = Y + (SCREEN_SIZE / 2) -1;
+	r.x = X + (SCREEN_SIZE * 0.2) -1;
+	r.y = Y + (SCREEN_SIZE * 0.5) -1;
 	r.w = 3;
 	r.h = 3 ;
 	i = 0 ;
@@ -186,6 +187,9 @@ int			ratio(int maxVal1, int maxVal2, double yourVal) {
 }
 
 void	Sdl::draw(Map m) {
+
+	SDL_GLContext opengl3_context;
+	(void)opengl3_context;
 
 	int x;
 	int y;
@@ -247,7 +251,7 @@ void	Sdl::createWindow() {
 
 void	Sdl::createRenderer() {
 
-	this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	this->renderer = SDL_CreateRenderer(this->window, -1, SDL_WINDOW_OPENGL | SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (!this->renderer)
 	{
 		SDL_DestroyWindow(this->window);

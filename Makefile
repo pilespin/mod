@@ -22,12 +22,21 @@ HDIR	=	includes/
 ODIR	=	obj/
 F_EXT	=	cpp
 H_EXT	=	hpp
-FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_SDL)/lib/
+
+ifeq ($(shell uname), Darwin)
+FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_SDL)/lib/ -I./$(PATH_SFML)/include/
+else
+FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_SDL)/lib/ -I./$(PATH_SFML)/usr/local/include/
+endif
 
 LIB_SDL 		= SDL
 PATH_SDL 		= SDL2-2.0.5
 PATH_SDL_IMG 	= SDL2_image-2.0.1
 SDL 			= `./$(LIB_SDL)/bin/sdl2-config --cflags --libs` -lSDL2_image
+
+LIB_SFML 	= SFML
+PATH_SFML 	= SFML-2.4.0
+SFML 		= -Xlinker -rpath -Xlinker ./$(PATH_SFML)/lib/ -L./$(PATH_SFML)/lib -lsfml-graphics -lsfml-window -lsfml-system
 
 SRCA	=	$(shell cd $(SDIR) && ls -1 *.$(F_EXT))
 
@@ -39,7 +48,7 @@ SRC 	=	$(patsubst %.$(F_EXT), $(SDIR)%.$(F_EXT), $(SRCA))
 HDR		=	$(patsubst %.$(H_EXT), $(HDIR)%.$(H_EXT), $(SRCH))
 OBJ		=	$(patsubst %.$(F_EXT), $(ODIR)%.o, $(SRCA))
 
-all: sdl compil
+all: sfml sdl compil
 
 no: compil
 
@@ -58,6 +67,21 @@ sdl:
 	@rm -rf $(PATH_SDL_IMG).tar.gz
 	@rm -rf $(PATH_SDL).tar.gz
 
+sfml:
+	@echo "\033[32mDownloading SFML ...\033[0m"
+	@curl http://mirror2.sfml-dev.org/files/SFML-2.4.0-sources.zip -o $(PATH_SFML).zip
+	@echo "\033[32mCompiling SFML...\033[0m"
+	@unzip $(PATH_SFML).zip
+	@cat patch_sfml > $(PATH_SFML)/src/SFML/Graphics/CMakeLists.txt
+ifeq ($(shell uname), Darwin)
+	@cd $(PATH_SFML) && cmake -DCMAKE_INSTALL_PREFIX=/Library/Frameworks/Mono.framework/Headers/freetype2/ . && make -j 8 && make -j 8 install DESTDIR=./
+	@cp -r $(PATH_SFML)/Library/Frameworks $(PATH_SFML)
+else
+	@cd $(PATH_SFML) && cmake . && make -j 8 && make -j 8 install DESTDIR=./
+endif
+	@rm -rf $(PATH_SFML).zip
+
+
 compil:
 	@echo "\033[32m compiling $(NAME) >>> \c \033[0m"
 	@mkdir -p $(ODIR)
@@ -65,7 +89,7 @@ compil:
 	@echo "\033[37m END $(NAME)\033[0m"
 
 $(NAME): $(OBJ) $(SRC)
-	@$(CC) -o $(NAME) $(OBJ) $(SDL)
+	@$(CC) -o $(NAME) $(OBJ) $(SDL) $(SFML)
 
 $(ODIR)%.o: $(SDIR)%.$(F_EXT) $(HDR)
 	@$(CC) -c $< -o $@ $(FLAGS) $(FOLDER)
@@ -78,12 +102,14 @@ clean:
 fclean: clean
 	@rm -f $(NAME)
 	@rm -rf $(PATH_SDL)
+	@rm -rf $(PATH_SFML).zip
+	@rm -rf $(PATH_SFML)
 
 re: fclean all
 
 run:
 	@clear
-	@make
+	@make no
 	@./$(NAME)
 
 leaks:
