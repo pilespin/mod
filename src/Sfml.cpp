@@ -36,9 +36,24 @@ float			ratio(float maxVal1, float maxVal2, double yourVal) {
 	return ((maxVal1 * static_cast<float>(yourVal) / maxVal2)/255.0);
 }
 
+void 	Sfml::Calcul(GLfloat x, GLfloat y, GLfloat z)
+{
+	GLfloat X;
+	GLfloat Y;
+
+	X = std::sqrt(2.0)/2.0 * (x - y);
+	Y = (std::sqrt(2.0/3.0)* z) - ((1.0 /std::sqrt(6.0)) * (x + y));
+
+	glVertex2f((X)/500.0 , (Y)  /500 );
+
+}
+
 void	Sfml::draw(Map map) {
 
 	GLuint       list_;
+	static int  t = time(NULL); 
+	static int a = 0;
+	static int b = 0;
   	// GLfloat g_color_buffer_data[500];
 
 	GLfloat  x;
@@ -46,6 +61,7 @@ void	Sfml::draw(Map map) {
 	int n = 0;
 	// this->window.clear(sf::Color(175, 95, 255, 255));
 	// this->window.clear(sf::Color(0, 0, 0, 255));
+        	GLfloat tr_s = 5;
     
     list_ = glGenLists( 1 );
   
@@ -66,24 +82,32 @@ void	Sfml::draw(Map map) {
         {
   			glColor3f (ratio(255, MAX_SIZE, map.access(x, y))+50.0/255.00, 50.0/255.0+ratio(90, MAX_SIZE, map.access(x, y)), 0 );
 
+
           // Définition des coordonnées des points
-          glVertex3f((x/*+500*/)/500.0  - 0.25, (y/*+500.0*/)/500.0-0.5, static_cast<GLfloat>(map.access(x, y))/500.0 - 0.5);
-          glVertex3f((x/*+500.0*/+1)/500.0 - 0.5, (y/*+500.0*/)/500.0-0.5, static_cast<GLfloat>(map.access(x+1, y))/500.0 - 0.5);
-          glVertex3f((x/*+500.0*/+1)/500.0 - 0.5, (y/*+500.0*/+1)/500.0-0.5, static_cast<GLfloat>(map.access(x+1, y+1))/500.0 - 0.5);
+          // glVertex3f((x/*+500*/)/500.0  - 0.5, (y/*+500.0*/)/500.0-0.5, static_cast<GLfloat>(map.access(x, y))/500.0 - 0.5);
+          // glVertex3f((x/*+500.0*/+tr_s)/500.0 - 0.5, (y/*+tr_s00.0*/)/500.0-0.5, static_cast<GLfloat>(map.access(x+1, y))/500.0 - 0.5);
+          // glVertex3f((x/*+tr_s00.0*/+tr_s)/500.0 - 0.5, (y/*+tr_s00.0*/+tr_s)/500.0-0.5, static_cast<GLfloat>(map.access(x+1, y+1))/500.0 - 0.5);
   			
   		// glColor3f (1.0, 0.0, 0.0);
+          this->Calcul(x,y, static_cast<GLfloat>(map.access(x, y)));
+          this->Calcul(x+tr_s,y, static_cast<GLfloat>(map.access(x, y)));
+          this->Calcul(x+tr_s,y+tr_s, static_cast<GLfloat>(map.access(x, y)));
           
 
-          glVertex3f((x/*+500.0*/)/500.0 - 0.5, (y/*+500.0*/)/500.0-0.5, static_cast<GLfloat>(map.access(x, y))/500.0 - 0.5);
-          glVertex3f((x/*+500.0*/+1)/500.0 - 0.5, (y/*+500.0*/+1)/500.0-0.5, static_cast<GLfloat>(map.access(x+1, y+1))/500.0 - 0.5);
-          glVertex3f((x/*+500.0*/)/500.0 - 0.5, (y/*+500.0*/+1)/500.0 - 0.5, static_cast<GLfloat>(map.access(x, y+1))/500.0 - 0.5);
+          this->Calcul(x,y, static_cast<GLfloat>(map.access(x, y)));
+          this->Calcul(x,y+tr_s, static_cast<GLfloat>(map.access(x, y)));
+          this->Calcul(x+tr_s,y+tr_s, static_cast<GLfloat>(map.access(x, y)));
+
+          // glVertex3f((x/*+tr_s00.0*/)/500.0 - 0.5, (y/*+tr_s00.0*/)/500.0-0.5, static_cast<GLfloat>(map.access(x, y))/500.0 - 0.5);
+          // glVertex3f((x/*+tr_s00.0*/+tr_s)/500.0 - 0.5, (y/*+tr_s00.0*/+tr_s)/500.0-0.5, static_cast<GLfloat>(map.access(x+1, y+1))/500.0 - 0.5);
+          // glVertex3f((x/*+tr_s00.0*/)/500.0 - 0.5, (y/*+tr_s00.0*/+tr_s)/500.0 - 0.5, static_cast<GLfloat>(map.access(x, y+1))/500.0 - 0.5);
   			n +=2;
           // g_color_buffer_data[x+y]
                                     
                                     
-          y++;
+          y+=tr_s;
         }
-        x++;
+        x+=tr_s;
       }
  
     glEnd();
@@ -91,6 +115,11 @@ void	Sfml::draw(Map map) {
   glColor3f (0.0, 0.0, 0.0);
   // GLfloat g_color_buffer_data = 0.583f;
    glClear          ( GL_COLOR_BUFFER_BIT ); // Réinitialisation z-buffer
+
+// glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  3.0f);
+// glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+// glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);
+//    view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
    // gluPerspective(45.0f, 0.1f, 0.1f, 100.0f);
   // gluLookAt(	/*GLdouble eyeX*/500.0,
  	// /*GLdouble eyeY*/500.0,
@@ -110,9 +139,17 @@ void	Sfml::draw(Map map) {
 
         // termine la trame courante (en interne, échange les deux tampons de rendu)
 window.display();
+	if (std::time(NULL) > t)
+	{
+		t = time(NULL);
+		b = a;
+		a = 0;
+	}
+	std::cout<<b<<std::endl;
+a++;
             // std::this_thread::sleep_for(std::chrono::milliseconds(10000));
             // exit(0);
-
+	// std::cout<<"a"<<std::endl;
 glDeleteLists(list_, n);
 
 

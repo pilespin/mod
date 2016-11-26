@@ -18,6 +18,8 @@ public:
 	void		draw(Map map);
 	void		getKey();
 	void		init();
+void 	Calcul(GLfloat x, GLfloat y, GLfloat z);
+
 
 	///////////////////////////// EXCEPTION ///////////////////////////////////
 	class Msg : public std::exception {
