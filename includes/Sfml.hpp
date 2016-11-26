@@ -15,7 +15,7 @@ public:
 
 	int			getValue() const;
 	void		empty();
-	void		draw();
+	void		draw(Map map);
 	void		getKey();
 	void		init();
 
@@ -34,3 +34,4 @@ private:
 };
 
 std::ostream &operator<<(std::ostream &o, Sfml &c);
+

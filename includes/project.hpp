@@ -15,7 +15,8 @@
 #include <regex>
 #include <list>
 #include <map>
-
+#include <SFML/OpenGL.hpp>
+// #include <GL/glut.h>
 #include "Map.hpp"
 #include "Sdl.hpp"
 #include "Parse.hpp"
@@ -24,4 +25,3 @@
 #define SCREEN_SIZE 1000
 #define ECHELLE 	20000
 #define SIZE_TO_SEA 120
-

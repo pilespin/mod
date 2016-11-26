@@ -89,7 +89,7 @@ compil:
 	@echo "\033[37m END $(NAME)\033[0m"
 
 $(NAME): $(OBJ) $(SRC)
-	@$(CC) -o $(NAME) $(OBJ) $(SDL) $(SFML)
+	@$(CC) -o $(NAME) $(OBJ) $(SDL) $(SFML) -framework OpenGL 
 
 $(ODIR)%.o: $(SDIR)%.$(F_EXT) $(HDR)
 	@$(CC) -c $< -o $@ $(FLAGS) $(FOLDER)

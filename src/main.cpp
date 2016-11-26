@@ -23,11 +23,11 @@ int main()
 
 		while (1)
 		{
-			sf.draw();
-			sf.getKey();
+			// sf.draw();
+			// sf.getKey();
 
-			// s.draw(map);
-			// s.getKey();
+			sf.draw(map);
+			sf.getKey();
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		}
