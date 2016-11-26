@@ -30,6 +30,7 @@ void	Sfml::init() {
     this->window.create(sf::VideoMode(SCREEN_SIZE, SCREEN_SIZE), "SFML");
     glEnable(GL_TEXTURE_2D);
 
+    glTranslatef(-0.7, 0.0, 0.0);
     glPushMatrix();
     glRotatef(-45.0, 1.0, 0.0, 0.0);
     glRotatef(-45.0, 0.0, 0.0, 1.0);
@@ -66,7 +67,7 @@ void	Sfml::draw(Map map) {
   int n = 0;
 	// this->window.clear(sf::Color(175, 95, 255, 255));
 	// this->window.clear(sf::Color(0, 0, 0, 255));
-  GLfloat tr_s = 1;
+  GLfloat tr_s = 15;
 
   list_ = glGenLists( 1 );
 
@@ -105,9 +106,9 @@ void	Sfml::draw(Map map) {
 
 
           // Définition des coordonnées des points
-       glVertex3f((x)/500.0  - 0.5,      (y)/500.0-0.5,      map.access(x, y)/500.0 - 0.5);
-       glVertex3f((x+tr_s)/500.0 - 0.5,  (y)/500.0-0.5,      map.access(x+1, y)/500.0 - 0.5);
-       glVertex3f((x+tr_s)/500.0 - 0.5,  (y+tr_s)/500.0-0.5, map.access(x+1, y+1)/500.0 - 0.5);
+       glVertex3f((x)/500.0,        (y)/500.0,      map.access(x, y)/500.0 );
+       glVertex3f((x+tr_s)/500.0,   (y)/500.0,      map.access(x+tr_s, y)/500.0 );
+       glVertex3f((x+tr_s)/500.0,   (y+tr_s)/500.0, map.access(x+tr_s, y+tr_s)/500.0 );
 
   		// glColor3f (1.0, 0.0, 0.0);
        // this->Calcul(x,y, static_cast<GLfloat>(map.access(x, y)));
@@ -119,9 +120,9 @@ void	Sfml::draw(Map map) {
        // this->Calcul(x,y+tr_s, static_cast<GLfloat>(map.access(x, y)));
        // this->Calcul(x+tr_s,y+tr_s, static_cast<GLfloat>(map.access(x, y)));
 
-       glVertex3f((x)/500.0 - 0.5,       (y)/500.0-0.5,          map.access(x, y)/500.0 - 0.5);
-       glVertex3f((x+tr_s)/500.0 - 0.5,  (y+tr_s)/500.0-0.5,     map.access(x+1, y+1)/500.0 - 0.5);
-       glVertex3f((x)/500.0 - 0.5,       (y+tr_s)/500.0 - 0.5,   map.access(x, y+1)/500.0 - 0.5);
+       glVertex3f((x)/500.0,        (y)/500.0,          map.access(x, y)/500.0 );
+       glVertex3f((x+tr_s)/500.0,   (y+tr_s)/500.0,     map.access(x+tr_s, y+tr_s)/500.0 );
+       glVertex3f((x)/500.0,        (y+tr_s)/500.0,     map.access(x, y+tr_s)/500.0 );
        n +=2;
           // g_color_buffer_data[x+y]
 

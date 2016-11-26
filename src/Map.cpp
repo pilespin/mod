@@ -18,6 +18,11 @@
 // }
 	double  Map::access(int x, int y)
 	{
+		if (x >= MAX_SIZE)
+			x = MAX_SIZE - 1;
+
+		if (y >= MAX_SIZE)
+			y = MAX_SIZE - 1;
 		return this->map[x][y];
 	}
 
