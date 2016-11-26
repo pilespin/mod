@@ -169,13 +169,11 @@ void 	Sdl::draw_pixel(double x, double y, double h)
 	// return (Vector(X, Y, 0));
 
 	SDL_Rect r;
-	double i;
 	(void)h;
 	r.x = X + (SCREEN_SIZE * 0.2) -1;
 	r.y = Y + (SCREEN_SIZE * 0.5) -1;
 	r.w = 3;
 	r.h = 3 ;
-	i = 0 ;
 	SDL_RenderDrawRect(this->renderer, &r);
 	SDL_RenderFillRect(this->renderer, &r);
 

@@ -25,8 +25,10 @@ H_EXT	=	hpp
 
 ifeq ($(shell uname), Darwin)
 FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_SDL)/lib/ -I./$(PATH_SFML)/include/
+LIB		=	-framework OpenGL
 else
 FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_SDL)/lib/ -I./$(PATH_SFML)/usr/local/include/
+LIB		=	-lGL
 endif
 
 LIB_SDL 		= SDL
@@ -89,7 +91,7 @@ compil:
 	@echo "\033[37m END $(NAME)\033[0m"
 
 $(NAME): $(OBJ) $(SRC)
-	@$(CC) -o $(NAME) $(OBJ) $(SDL) $(SFML) -framework OpenGL 
+	@$(CC) -o $(NAME) $(OBJ) $(SDL) $(SFML) $(LIB)
 
 $(ODIR)%.o: $(SDIR)%.$(F_EXT) $(HDR)
 	@$(CC) -c $< -o $@ $(FLAGS) $(FOLDER)
