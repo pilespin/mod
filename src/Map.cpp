@@ -55,12 +55,12 @@ float		Map::getMap(int x, int y) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::list<int> Map::getCosineLine(int z) {
+std::list<float> Map::getCosineLine(float z) {
 
-	std::list<int> l;
+	std::list<float> l;
 
 	if (z <= 0)
-		return (std::list<int> {0});
+		return (std::list<float> {0});
 
 	for (float i = 0; i < M_PI; i+= M_PI / (this->mapSizeX/4)) {
 		l.push_back(mylib::ratiof(z, 1, std::cos(i)/2+0.5));
@@ -68,9 +68,9 @@ std::list<int> Map::getCosineLine(int z) {
 	return (l);
 }
 
-void	Map::placePointOnSide(int x, int y, int z, int side) {
+void	Map::placePointOnSide(int x, int y, float z, int side) {
 
-	std::list<int> res = getCosineLine(z);
+	std::list<float> res = getCosineLine(z);
 	int i = 0;
 	for (auto it = res.begin(); it != res.end(); it++) {
 		if (side == 0 || side == 3)
@@ -80,7 +80,7 @@ void	Map::placePointOnSide(int x, int y, int z, int side) {
 		assignMap(Vector(x - i, y, *it));
 
 		int j = 0;
-		std::list<int> res2 = getCosineLine(*it);
+		std::list<float> res2 = getCosineLine(*it);
 		for (auto it2 = res2.begin(); it2 != res2.end(); it2++) {
 			if (side == 0 || side == 1)
 				j++;
@@ -95,7 +95,7 @@ void	Map::placePoint() {
 
 	int x;
 	int y;
-	int z;
+	float z;
 
 	for (auto it = point.begin(); it != point.end(); it++) {
 
@@ -117,7 +117,7 @@ void	Map::placePoint() {
 
 int 	Map::getZMax() const{
 
-	int maxSize	= 0;
+	float maxSize	= 0;
 
 	for (int y = 0; y != mapSizeY; y++)
 	{
@@ -143,7 +143,7 @@ void	Map::assignMap(Vector v) {
 
 void	Map::initMap(int nb) {
 
-	std::vector<std::vector<int>> vec(mapSizeX, std::vector<int>(mapSizeY));
+	std::vector<std::vector<float>> vec(mapSizeX, std::vector<float>(mapSizeY));
 	this->map = vec;
 
 	for (int y = 0; y != mapSizeY; y++)

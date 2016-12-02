@@ -6,7 +6,7 @@
 class Vector {
 
 public:
-	Vector(int x, int y, int z);
+	Vector(int x, int y, float z);
 	~Vector();
 	// Vector(Vector const &src);
 	// Vector &operator=(Vector const &rhs);
@@ -28,7 +28,7 @@ public:
 	int _val;
 	int x;
 	int y;
-	int z;
+	float z;
 };
 
 std::ostream &operator<<(std::ostream &o, Vector &c);

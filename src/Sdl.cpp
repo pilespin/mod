@@ -85,6 +85,7 @@ std::ostream &operator<<(std::ostream &o, Sdl &c) {
 int				Sdl::getValue() const			{	return (this->_val);		}
 SDL_Window		*Sdl::getWindow() const			{	return (this->window);		}
 SDL_Renderer	*Sdl::getRenderer() const		{	return (this->renderer);	}
+
 void			Sdl::setWindowName(std::string name) {
 	if (name.length() > 0)
 	{
@@ -188,7 +189,7 @@ void	Sdl::draw(Map m) {
 	// glNewList(list_, GL_COMPILE);
 	// glBegin(GL_TRIANGLES);
 	glBegin(GL_QUADS);
-	glEnable(GL_BLEND) ;
+	// glEnable(GL_BLEND);
 	int maxZ = m.getZMax();
 	for (float y = 0; y != m.getMapSizeY(); y++)
 	{
@@ -196,13 +197,13 @@ void	Sdl::draw(Map m) {
 		{
 			// float zColor	= mylib::ratiof(1, maxZ, m.getMap(x,y));
 			// std::cout << "color: " << mylib::ratiof(100, maxZ, m.getMap(x,y)) << std::endl;
-			if (this->waterPercent > mylib::ratiof(100, maxZ, m.getMap(x,y)))
-			{
-				// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-				glColor3f(0.1,0.8,0.6);
-			}	// glColor3f(0,0,0);
-			else
-				glColor3f(0.5+mylib::ratiof(0.5, maxZ, m.getMap(x,y)), 0.3+mylib::ratiof(0.3, maxZ, m.getMap(x,y)), 0);
+			// if (this->waterPercent > mylib::ratiof(100, maxZ, m.getMap(x,y)))
+			// {
+			// 	// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+			// 	glColor3f(0.1,0.8,0.6);
+			// }	// glColor3f(0,0,0);
+			// else
+			glColor3f(0.5+mylib::ratiof(0.5, maxZ, m.getMap(x,y)), 0.3+mylib::ratiof(0.3, maxZ, m.getMap(x,y)), 0);
 			glVertex3f( (x)/m.getMapSizeX(),    (y)/m.getMapSizeY(),    	m.getMap(x,y)/m.getMapSizeX() );
 			// glColor3f(mylib::ratiof(0.5, maxZ, m.getMap(x+1,y)), 0, 0);
 			glVertex3f( (x+1)/m.getMapSizeX(),  (y)/m.getMapSizeY(),      	m.getMap(x+1,y)/m.getMapSizeX() );

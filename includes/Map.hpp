@@ -23,7 +23,7 @@ public:
 	void		empty();
 	float		getMap(int x, int y);
 
-	std::list<int> getCosineLine(int z);
+	std::list<float> getCosineLine(float z);
 
 	// const std::vector<std::vector<int>>	&getMap() const;	
 
@@ -37,10 +37,10 @@ public:
 	};
 
 private:
-	void	placePointOnSide(int x, int y, int z, int side);
+	void	placePointOnSide(int x, int y, float z, int side);
 	Map();
 
-	std::vector<std::vector<int>>	map;
+	std::vector<std::vector<float>>	map;
 	std::vector<Vector>				point;
 
 	int _val;

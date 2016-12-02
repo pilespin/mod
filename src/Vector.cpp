@@ -8,7 +8,7 @@ Vector::Vector() 						{
 	this->z = 0;
 }
 
-Vector::Vector(int x, int y, int z) 	{	
+Vector::Vector(int x, int y, float z) 	{	
 	this->_val = 0;
 	this->x = x;
 	this->y = y;
