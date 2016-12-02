@@ -14,25 +14,73 @@ void 	Sdl::waterFixedDown() 		{
 		this->waterPercent--;
 	std::cout << "Water DOWN " << waterPercent << " %" << std::endl;
 }
-void 	Sdl::isometricViewAngleUp() 		{	
-
-	glPushMatrix();
-	// glTranslatef(-0.5, -0.5, 0.0);
-	glTranslatef(-0.7, 0.0, 0.0);
+void 	Sdl::rotXDown() {	
+	--this->rotX %= 360;
+	std::cout << "Rotation X " << rotX << "°" << std::endl;
 }
-void 	Sdl::isometricViewAngleDown() 		{	
-	if (this->IsometricViewAngle > 0)
-		this->IsometricViewAngle--;
+void 	Sdl::rotXUp() {	
+	++this->rotX %= 360;
+	std::cout << "Rotation X " << rotX << "°" << std::endl;
+}
+void 	Sdl::rotYDown() {	
+	--this->rotY %= 360;
+	std::cout << "Rotation Y " << rotY << "°" << std::endl;
+}
+void 	Sdl::rotYUp() {	
+	++this->rotY %= 360;
+	std::cout << "Rotation Y " << rotY << "°" << std::endl;
+}
+void 	Sdl::rotZDown() {	
+	--this->rotZ %= 360;
+	std::cout << "Rotation Z " << rotZ << "°" << std::endl;
+}
+void 	Sdl::rotZUp() {	
+	++this->rotZ %= 360;
+	std::cout << "Rotation Z " << rotZ << "°" << std::endl;
+}
+void 	Sdl::translationXUp() {	
+	this->tranX += 0.01;
+	std::cout << "Translation X " << tranX << std::endl;
+}
+void 	Sdl::translationXDown() {	
+	this->tranX -= 0.01;
+	std::cout << "Translation X " << tranX << std::endl;
+}
+void 	Sdl::translationYUp() {	
+	this->tranY += 0.01;
+	std::cout << "Translation Y " << tranY << std::endl;
+}
+void 	Sdl::translationYDown() {	
+	this->tranY -= 0.01;
+	std::cout << "Translation Y " << tranY << std::endl;
+}
+void 	Sdl::translationZUp() {	
+	this->tranZ += 0.01;
+	std::cout << "Translation Z " << tranZ << std::endl;
+}
+void 	Sdl::translationZDown() {	
+	this->tranZ -= 0.01;
+	std::cout << "Translation Z " << tranZ << std::endl;
 }
 ///////////////////////////////   KEY   ///////////////////////////////////////
 
 void	Sdl::initKey() {
 
 	this->keymap[SDLK_ESCAPE]			= &Sdl::moveToEscape;
-	this->keymap[SDL_SCANCODE_UP]		= &Sdl::waterFixedUp;
-	this->keymap[SDL_SCANCODE_DOWN]		= &Sdl::waterFixedDown;
-	this->keymap[SDL_SCANCODE_RIGHT]	= &Sdl::isometricViewAngleUp;
-	this->keymap[SDL_SCANCODE_LEFT]		= &Sdl::isometricViewAngleDown;
+	this->keymap[SDLK_w]				= &Sdl::waterFixedUp;
+	this->keymap[SDLK_x]				= &Sdl::waterFixedDown;
+	this->keymap[SDL_SCANCODE_DOWN]		= &Sdl::rotXDown;
+	this->keymap[SDL_SCANCODE_UP]		= &Sdl::rotXUp;
+	this->keymap[SDL_SCANCODE_KP_2]		= &Sdl::rotYDown;
+	this->keymap[SDL_SCANCODE_KP_5]		= &Sdl::rotYUp;
+	this->keymap[SDL_SCANCODE_LEFT]		= &Sdl::rotZDown;
+	this->keymap[SDL_SCANCODE_RIGHT]	= &Sdl::rotZUp;
+	this->keymap[SDLK_d]				= &Sdl::translationXUp;
+	this->keymap[SDLK_q]				= &Sdl::translationXDown;
+	this->keymap[SDLK_z]				= &Sdl::translationYUp;
+	this->keymap[SDLK_s]				= &Sdl::translationYDown;
+	// this->keymap[SDL_SCANCODE_UP]		= &Sdl::translationZUp;
+	// this->keymap[SDL_SCANCODE_DOWN]		= &Sdl::translationZDown;
 }
 
 Sdl::Sdl() {
@@ -45,6 +93,14 @@ Sdl::Sdl() {
 	this->renderer = NULL;
 	this->waterPercent = 5;
 	this->IsometricViewAngle = 135;
+	this->rotX = 45;
+	this->rotY = 180;
+	this->rotZ = -135;
+	this->tranX = 0;
+	this->tranY = 0.4;
+	this->tranZ = 1;
+
+
 }
 
 Sdl::~Sdl() {
@@ -122,6 +178,23 @@ void	Sdl::init() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Init(SDL_INIT_VIDEO);
 	IMG_Init(IMG_INIT_PNG);
+	    /* Enable smooth shading */
+	// glShadeModel( GL_SMOOTH );
+
+ //    /* Set the background black */
+	// glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
+
+ //    /* Depth buffer setup */
+	// glClearDepth( 1.0f );
+
+ //    /* Enables Depth Testing */
+	// glEnable( GL_DEPTH_TEST );
+
+ //    /* The Type Of Depth Test To Do */
+	// glDepthFunc( GL_LEQUAL );
+
+    /* Really Nice Perspective Calculations */
+	// glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
 	this->setWindowSize(this->windowSizeX, this->windowSizeY);
 	this->setWindowName("mod");
 	this->createWindow();
@@ -133,25 +206,26 @@ void	Sdl::init() {
 	// // SDL_GL_CONTEXT_CORE gives us only the newer version, deprecated functions are disabled
 	// SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
-	// // 3.2 is part of the modern versions of OpenGL, but most video cards whould be able to run it
+	// // // 3.2 is part of the modern versions of OpenGL, but most video cards whould be able to run it
 	// SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	// SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 
-	// // Turn on double buffering with a 24bit Z buffer.
-	// // You may need to change this to 16 or 32 for your system
+	// // // Turn on double buffering with a 24bit Z buffer.
+	// // // You may need to change this to 16 or 32 for your system
 	// SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	// // This makes our buffer swap syncronized with the monitor's vertical refresh
-	SDL_GL_SetSwapInterval(1);
+	// // // This makes our buffer swap syncronized with the monitor's vertical refresh
+	// SDL_GL_SetSwapInterval(1);
 
 	glEnable(GL_TEXTURE_2D);
 
+	// glLoadIdentity();
 
-	glPushMatrix();
+	// glPushMatrix();
 	// glTranslatef(-0.5, -0.5, 0.0);
-	glTranslatef(-0.7, 0.0, 0.0);
-	glRotatef(-45.0, 1.0, 0.0, 0.0);
-	glRotatef(-45.0, 0.0, 0.0, 1.0);
+	// glTranslatef(-0.7, 0.0, 0.0);
+	// glRotatef(-45.0, 1.0, 0.0, 0.0);
+	// glRotatef(-45.0, 0.0, 0.0, 1.0);
     // glRotatef(-10.0, 1.0, 1.0, 1.0);
 
     // this->loadImage("img/squareyellow.png", "squareyellow");
@@ -183,11 +257,24 @@ void 	Sdl::getKey(void) {
 
 void	Sdl::draw(Map m) {
 
-	// GLuint	list_ = glGenLists(1);
-	// glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); 
-	// glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
-	// glNewList(list_, GL_COMPILE);
-	// glBegin(GL_TRIANGLES);
+    /* Set the background black */
+	glClearColor( 0.25f, 0.5f, 0.9f, 0.0f );
+
+	glPushMatrix();
+	glLoadIdentity();
+	// glTranslatef(-0.5, -0.5, 0.0);
+
+	// glRotatef(0.0, 1.0, 0.0, 0.0);
+	// glRotatef(10.0, 0.0, 0.0, 1.0);
+	glTranslatef(tranX, tranY, tranZ);
+	glRotatef(rotX, 1.0, 0.0, 0.0);
+	glRotatef(rotY, 0.0, 1.0, 0.0);
+	glRotatef(rotZ, 0.0, 0.0, 1.0);
+	// glRotatef(120.0, 0.0, 0.0, 1.0);
+
+	GLuint	list_ = glGenLists(1);
+	glNewList(list_, GL_COMPILE);
+	// glBegin(GL_TRIANGLE_STRIP);
 	glBegin(GL_QUADS);
 	// glEnable(GL_BLEND);
 	int maxZ = m.getZMax();
@@ -197,13 +284,13 @@ void	Sdl::draw(Map m) {
 		{
 			// float zColor	= mylib::ratiof(1, maxZ, m.getMap(x,y));
 			// std::cout << "color: " << mylib::ratiof(100, maxZ, m.getMap(x,y)) << std::endl;
-			// if (this->waterPercent > mylib::ratiof(100, maxZ, m.getMap(x,y)))
-			// {
-			// 	// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-			// 	glColor3f(0.1,0.8,0.6);
-			// }	// glColor3f(0,0,0);
-			// else
-			glColor3f(0.5+mylib::ratiof(0.5, maxZ, m.getMap(x,y)), 0.3+mylib::ratiof(0.3, maxZ, m.getMap(x,y)), 0);
+			if (this->waterPercent >= mylib::ratiof(100, maxZ, m.getMap(x,y))+1)
+			{
+				// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+				glColor3f(0.1,0.8,0.6);
+			}	// glColor3f(0,0,0);
+			else
+				glColor3f(0.5+mylib::ratiof(0.5, maxZ, m.getMap(x,y)), 0.3+mylib::ratiof(0.3, maxZ, m.getMap(x,y)), 0);
 			glVertex3f( (x)/m.getMapSizeX(),    (y)/m.getMapSizeY(),    	m.getMap(x,y)/m.getMapSizeX() );
 			// glColor3f(mylib::ratiof(0.5, maxZ, m.getMap(x+1,y)), 0, 0);
 			glVertex3f( (x+1)/m.getMapSizeX(),  (y)/m.getMapSizeY(),      	m.getMap(x+1,y)/m.getMapSizeX() );
@@ -219,13 +306,15 @@ void	Sdl::draw(Map m) {
 		}
 	}
 	glEnd();
-	// glPopMatrix();
+	glPopMatrix();
+	glEndList();
 
-	// glEndList();
-	// glCallList(list_);
-	// glDeleteLists(list_, m.getMapSizeX() * m.getMapSizeY());
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); 
 
-	std::cout << "Passed" << std::endl;
+	glCallList(list_);
+	glDeleteLists(list_, m.getMapSizeX() * m.getMapSizeY());
+
+	// std::cout << "Passed" << std::endl;
 	SDL_RenderPresent(this->getRenderer());
 }
 

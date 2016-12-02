@@ -16,8 +16,8 @@ int main()
 		p.readFile("./data/demo4.mod1");
 		// p.printData();
 
-		Map		m = Map(p.getPointOfMap(), 20000, 20000, 200);
-		m.printMap();
+		Map		m = Map(p.getPointOfMap(), 20000, 20000, 50);
+		// m.printMap();
 
 		while (1)
 		{

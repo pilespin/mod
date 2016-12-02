@@ -63,7 +63,7 @@ std::list<float> Map::getCosineLine(float z) {
 		return (std::list<float> {0});
 
 	for (float i = 0; i < M_PI; i+= M_PI / (this->mapSizeX/4)) {
-		l.push_back(mylib::ratiof(z, 1, std::cos(i)/2+0.5));
+		l.push_back(mylib::ratiof(z, 1.2, (std::cos(i)/2+0.5)));
 	}
 	return (l);
 }
@@ -77,11 +77,13 @@ void	Map::placePointOnSide(int x, int y, float z, int side) {
 			i++;
 		else if (side == 1 || side == 2)
 			i--;
-		assignMap(Vector(x - i, y, *it));
 
 		int j = 0;
 		std::list<float> res2 = getCosineLine(*it);
 		for (auto it2 = res2.begin(); it2 != res2.end(); it2++) {
+			if (j == 0)
+				assignMap(Vector(x - i, y, *it2));
+
 			if (side == 0 || side == 1)
 				j++;
 			else if (side == 2 || side == 3)
@@ -103,7 +105,7 @@ void	Map::placePoint() {
 		x = it->x / reduceFactor;
 		y = it->y / reduceFactor;
 		z = it->z / reduceFactor;
-		assignMap(Vector(it->x / reduceFactor, it->y / reduceFactor, z));
+		// assignMap(Vector(it->x / reduceFactor, it->y / reduceFactor, z));
 		
 
 		placePointOnSide(x+1, y, z, 0);

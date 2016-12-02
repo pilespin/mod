@@ -39,6 +39,19 @@ public:
 
 private:
 
+	void 	rotXUp();
+	void 	rotXDown();
+	void 	rotYUp();
+	void 	rotYDown();
+	void 	rotZUp();
+	void 	rotZDown();
+	void 	translationXDown();
+	void 	translationXUp();
+	void 	translationYDown();
+	void 	translationYUp();
+	void 	translationZDown();
+	void 	translationZUp();
+
 	void	initKey();
 	void 	moveToEscape();
 
@@ -67,6 +80,12 @@ private:
 	int 			windowSizeY;
 	double			last_time;
 	int 			waterPercent;
+	int			rotX;
+	int			rotY;
+	int			rotZ;
+	float tranX;
+	float tranY;
+	float tranZ;
 
 	int IsometricViewAngle;
 };
