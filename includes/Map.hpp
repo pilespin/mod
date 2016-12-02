@@ -37,8 +37,8 @@ public:
 	};
 
 private:
-	void	placePointOnSide(int x, int y, float z, int side);
 	Map();
+	void	placePointOnSide(int x, int y, float z, int side);
 
 	std::vector<std::vector<float>>	map;
 	std::vector<Vector>				point;

@@ -11,14 +11,14 @@ int main()
 		Sdl 	s = Sdl();
 		Parse	p = Parse();
 
-		s.setWindowSize(1000, 1000);
-		s.init();
+
 		p.readFile("./data/demo4.mod1");
 		// p.printData();
 
-		Map		m = Map(p.getPointOfMap(), 20000, 20000, 50);
+		Map		m = Map(p.getPointOfMap(), 20000, 20000, 100);
 		// m.printMap();
-
+		s.setWindowSize(1000, 1000);
+		s.init(m);
 		while (1)
 		{
 		// std::cout << "Pass" << std::endl;

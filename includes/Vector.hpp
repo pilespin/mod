@@ -25,10 +25,11 @@ public:
 
 public:
 	Vector();
+	
 	int _val;
-	int x;
-	int y;
-	float z;
+	int 	x;
+	int 	y;
+	float 	z;
 };
 
 std::ostream &operator<<(std::ostream &o, Vector &c);

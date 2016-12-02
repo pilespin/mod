@@ -8,18 +8,12 @@ Parse::~Parse()						{}
 
 Parse::Parse(Parse const &src)	{ 
 	static_cast<void>(src);
-	// this->_val = src._val;
-	// this->file = src.file;
-	// this->vector = src.vector;
 }
 
 // Parse	&Parse::operator=(Parse const &rhs) {
 
 // 	if (this != &rhs)
 // 	{
-// 		this->_val = rhs._val;
-// 		// this->file = rhs.file;
-// 		this->vector = rhs.vector;
 // 	}
 // 	return (*this);
 // }

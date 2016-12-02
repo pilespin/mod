@@ -20,7 +20,7 @@ public:
 	void	setWindowSize(int y, int x);
 	void	setWindowName(std::string name);
 
-	void	init();
+	void	init(Map m);
 	void 	getKey();
 	void	quit();
 	void	draw(Map m);
@@ -38,7 +38,8 @@ public:
 	};
 
 private:
-
+	
+	void	initMatrix();
 	void 	rotXUp();
 	void 	rotXDown();
 	void 	rotYUp();
@@ -55,8 +56,6 @@ private:
 	void	initKey();
 	void 	moveToEscape();
 
-	SDL_Window		*getWindow() const;
-	SDL_Renderer 	*getRenderer() const;
 	SDL_Surface		*getImage(std::string name);
 	SDL_Surface		*loadImage(std::string path, std::string newname);
 
@@ -64,12 +63,10 @@ private:
 	void			createWindow();
 	void			createRenderer();
 
-	Vector			transform3dTo2d(Vector v);
-	void 			isometricViewAngleUp();
-	void 			isometricViewAngleDown();
+	void	preparateMap(Map m);
 
 	std::map<char, void (Sdl::*)()> 		keymap;
-	std::map< std::string, SDL_Surface * > 	img;
+	std::map<std::string, SDL_Surface *> 	img;
 
 	int 			_val;
 	SDL_Window 		*window;
@@ -78,16 +75,19 @@ private:
 	int 			squareSize;
 	int 			windowSizeX;
 	int 			windowSizeY;
-	double			last_time;
+	// double			last_time;
 	int 			waterPercent;
-	int			rotX;
-	int			rotY;
-	int			rotZ;
-	float tranX;
-	float tranY;
-	float tranZ;
 
-	int IsometricViewAngle;
+	int		rotX;
+	int		rotY;
+	int		rotZ;
+	float 	tranX;
+	float 	tranY;
+	float 	tranZ;
+
+	GLuint	listMAP;
+	GLuint	listMAPSize;
+
 };
 
 std::ostream &operator<<(std::ostream &o, Sdl &c);

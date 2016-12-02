@@ -95,18 +95,11 @@ void	Map::placePointOnSide(int x, int y, float z, int side) {
 
 void	Map::placePoint() {
 
-	int x;
-	int y;
-	float z;
-
 	for (auto it = point.begin(); it != point.end(); it++) {
 
-		//UPLEFT
-		x = it->x / reduceFactor;
-		y = it->y / reduceFactor;
-		z = it->z / reduceFactor;
-		// assignMap(Vector(it->x / reduceFactor, it->y / reduceFactor, z));
-		
+		int x 	= it->x / reduceFactor;
+		int y 	= it->y / reduceFactor;
+		float z	= it->z / reduceFactor;
 
 		placePointOnSide(x+1, y, z, 0);
 		placePointOnSide(x-1, y, z, 1);
@@ -114,7 +107,6 @@ void	Map::placePoint() {
 		placePointOnSide(x+1, y, z, 3);
 		
 	}
-
 }
 
 int 	Map::getZMax() const{
