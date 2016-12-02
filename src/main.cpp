@@ -11,13 +11,13 @@ int main()
 		Sdl 	s = Sdl();
 		Parse	p = Parse();
 
-
+		s.setWindowSize(1000, 1000);
 		s.init();
-		p.readFile("./data/demo5.mod1");
+		p.readFile("./data/demo4.mod1");
 		// p.printData();
 
-		Map		m = Map(p.getPointOfMap(), 20000, 20000, 50);
-		// m.printMap();
+		Map		m = Map(p.getPointOfMap(), 20000, 20000, 40);
+		m.printMap();
 
 		while (1)
 		{
@@ -26,7 +26,7 @@ int main()
 			s.draw(m);
 			s.getKey();
 
-    		mylib::sleep(1);
+			mylib::sleep(1);
 		}
 	}
 	catch (std::exception &e)

@@ -39,80 +39,78 @@ std::ostream &operator<<(std::ostream &o, Map &c) {
 	return (o);
 }
 ///////////////////////////////////////////////////////////////////////////////
-int									Map::getValue() const		{	return (this->_val);		}
-int									Map::getMapSizeX() const	{	return (this->mapSizeX);	}
-int									Map::getMapSizeY() const	{	return (this->mapSizeY);	}
-const std::vector<std::vector<int>>	&Map::getMap() const		{	return (this->map);			}
+int		Map::getValue() const			{	return (this->_val);		}
+int		Map::getMapSizeX() const		{	return (this->mapSizeX);	}
+int		Map::getMapSizeY() const		{	return (this->mapSizeY);	}
+// const std::vector<std::vecto		getMap() const		{	return (this->map);			}
+float		Map::getMap(int x, int y) {
+
+	if (x < 0 || x > this->mapSizeX - 1)
+		x = this->mapSizeX - 1;
+	if (y < 0 || y > this->mapSizeY - 1)
+		y = this->mapSizeY - 1;
+
+	return (this->map[x][y]);
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
+std::list<int> Map::getCosineLine(int z) {
+
+	std::list<int> l;
+
+	if (z <= 0)
+		return (std::list<int> {0});
+
+	for (float i = 0; i < M_PI; i+= M_PI / (this->mapSizeX/4)) {
+		l.push_back(mylib::ratiof(z, 1, std::cos(i)/2+0.5));
+	}
+	return (l);
+}
+
+void	Map::placePointOnSide(int x, int y, int z, int side) {
+
+	std::list<int> res = getCosineLine(z);
+	int i = 0;
+	for (auto it = res.begin(); it != res.end(); it++) {
+		if (side == 0 || side == 3)
+			i++;
+		else if (side == 1 || side == 2)
+			i--;
+		assignMap(Vector(x - i, y, *it));
+
+		int j = 0;
+		std::list<int> res2 = getCosineLine(*it);
+		for (auto it2 = res2.begin(); it2 != res2.end(); it2++) {
+			if (side == 0 || side == 1)
+				j++;
+			else if (side == 2 || side == 3)
+				j--;
+			assignMap(Vector(x - i, y - j, *it2));
+		}
+	}
+}
+
 void	Map::placePoint() {
+
 	int x;
 	int y;
 	int z;
-	int i;
-	int j;
 
 	for (auto it = point.begin(); it != point.end(); it++) {
 
 		//UPLEFT
+		x = it->x / reduceFactor;
+		y = it->y / reduceFactor;
 		z = it->z / reduceFactor;
 		assignMap(Vector(it->x / reduceFactor, it->y / reduceFactor, z));
-		for (i = z; i != 0; i--) {
+		
 
-			x = it->x / reduceFactor - i;
-			y = it->y / reduceFactor;
-
-			assignMap(Vector(x + i, y - i, z - i));
-
-			for (j = x; j != 0; j--) {
-				assignMap(Vector(x, y - j + 1, z - i - j + 1));
-			}
-		}
-
-		//UPRIGHT
-		z = it->z / reduceFactor;
-		assignMap(Vector(it->x / reduceFactor, it->y / reduceFactor, z));
-		for (i = z; i != 0; i--) {
-
-			x = it->x / reduceFactor + i;
-			y = it->y / reduceFactor;
-
-				// assignMap(Vector(x, y + i, z - i));
-
-			for (j = x; j != 0; j--) {
-				assignMap(Vector(x, y - j + 1, z - i - j + 1));
-			}
-		}
-
-		//DOWNLEFT
-		z = it->z / reduceFactor;
-		assignMap(Vector(it->x / reduceFactor, it->y / reduceFactor, z));
-		for (i = z; i != 0; i--) {
-
-			x = it->x / reduceFactor + i;
-			y = it->y / reduceFactor;
-
-			assignMap(Vector(x - i, y + i, z - i));
-
-			for (j = x; j != 0; j--) {
-				assignMap(Vector(x, y + j, z - i - j));
-			}
-		}
-
-		//DOWNRIGHT
-		z = it->z / reduceFactor;
-		assignMap(Vector(it->x / reduceFactor, it->y / reduceFactor, z));
-		for (i = z; i != 0; i--) {
-
-			x = it->x / reduceFactor - i;
-			y = it->y / reduceFactor;
-
-				// assignMap(Vector(x + i, y - i, z - i));
-
-			for (j = x; j != 0; j--) {
-				assignMap(Vector(x, y + j, z - i - j));
-			}
-		}
+		placePointOnSide(x+1, y, z, 0);
+		placePointOnSide(x-1, y, z, 1);
+		placePointOnSide(x-1, y, z, 2);
+		placePointOnSide(x+1, y, z, 3);
+		
 	}
 
 }
@@ -131,7 +129,6 @@ int 	Map::getZMax() const{
 	}
 	return (maxSize);
 }
-
 
 void	Map::assignMap(Vector v) {
 

@@ -21,8 +21,11 @@ public:
 	int			getMapSizeY() const;
 	int 		getZMax() const;
 	void		empty();
+	float		getMap(int x, int y);
 
-	const std::vector<std::vector<int>>	&getMap() const;	
+	std::list<int> getCosineLine(int z);
+
+	// const std::vector<std::vector<int>>	&getMap() const;	
 
 	///////////////////////////// EXCEPTION ///////////////////////////////////
 	class Msg : public std::exception {
@@ -34,6 +37,7 @@ public:
 	};
 
 private:
+	void	placePointOnSide(int x, int y, int z, int side);
 	Map();
 
 	std::vector<std::vector<int>>	map;

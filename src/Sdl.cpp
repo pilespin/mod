@@ -7,14 +7,18 @@ void 	Sdl::moveToEscape() 		{	throw Error("Goodbye");	}
 void 	Sdl::waterFixedUp() 		{	
 	if (this->waterPercent < 100)
 		this->waterPercent++;	
+	std::cout << "Water UP " << waterPercent << " %" << std::endl;
 }
 void 	Sdl::waterFixedDown() 		{	
 	if (this->waterPercent > 0)
 		this->waterPercent--;
+	std::cout << "Water DOWN " << waterPercent << " %" << std::endl;
 }
 void 	Sdl::isometricViewAngleUp() 		{	
-	if (this->IsometricViewAngle < 360)
-		this->IsometricViewAngle++;
+
+	glPushMatrix();
+	// glTranslatef(-0.5, -0.5, 0.0);
+	glTranslatef(-0.7, 0.0, 0.0);
 }
 void 	Sdl::isometricViewAngleDown() 		{	
 	if (this->IsometricViewAngle > 0)
@@ -122,7 +126,32 @@ void	Sdl::init() {
 	this->createWindow();
 	this->createRenderer();
 	this->initKey();
-    SDL_SetRenderDrawColor(this->getRenderer(), 20, 20, 255, 255); //BackGround
+    // SDL_SetRenderDrawColor(this->getRenderer(), 20, 20, 255, 255); //BackGround    // SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+
+    	// Set our OpenGL version.
+	// // SDL_GL_CONTEXT_CORE gives us only the newer version, deprecated functions are disabled
+	// SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
+	// // 3.2 is part of the modern versions of OpenGL, but most video cards whould be able to run it
+	// SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	// SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+
+	// // Turn on double buffering with a 24bit Z buffer.
+	// // You may need to change this to 16 or 32 for your system
+	// SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+	// // This makes our buffer swap syncronized with the monitor's vertical refresh
+	SDL_GL_SetSwapInterval(1);
+
+	glEnable(GL_TEXTURE_2D);
+
+
+	glPushMatrix();
+	// glTranslatef(-0.5, -0.5, 0.0);
+	glTranslatef(-0.7, 0.0, 0.0);
+	glRotatef(-45.0, 1.0, 0.0, 0.0);
+	glRotatef(-45.0, 0.0, 0.0, 1.0);
+    // glRotatef(-10.0, 1.0, 1.0, 1.0);
 
     // this->loadImage("img/squareyellow.png", "squareyellow");
 }
@@ -153,62 +182,78 @@ void 	Sdl::getKey(void) {
 
 void	Sdl::draw(Map m) {
 
-	int sizeX = this->windowSizeX / m.getMapSizeX();
-	int sizeY = this->windowSizeY / m.getMapSizeY();
+	// GLuint	list_ = glGenLists(1);
+	// glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); 
+	// glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
+	// glNewList(list_, GL_COMPILE);
+	// glBegin(GL_TRIANGLES);
+	glBegin(GL_QUADS);
+	glEnable(GL_BLEND) ;
+	int maxZ = m.getZMax();
+	for (float y = 0; y != m.getMapSizeY(); y++)
+	{
+		for (float x = 0; x != m.getMapSizeX(); x++)
+		{
+			// float zColor	= mylib::ratiof(1, maxZ, m.getMap(x,y));
+			// std::cout << "color: " << mylib::ratiof(100, maxZ, m.getMap(x,y)) << std::endl;
+			if (this->waterPercent > mylib::ratiof(100, maxZ, m.getMap(x,y)))
+			{
+				// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+				glColor3f(0.1,0.8,0.6);
+			}	// glColor3f(0,0,0);
+			else
+				glColor3f(0.5+mylib::ratiof(0.5, maxZ, m.getMap(x,y)), 0.3+mylib::ratiof(0.3, maxZ, m.getMap(x,y)), 0);
+			glVertex3f( (x)/m.getMapSizeX(),    (y)/m.getMapSizeY(),    	m.getMap(x,y)/m.getMapSizeX() );
+			// glColor3f(mylib::ratiof(0.5, maxZ, m.getMap(x+1,y)), 0, 0);
+			glVertex3f( (x+1)/m.getMapSizeX(),  (y)/m.getMapSizeY(),      	m.getMap(x+1,y)/m.getMapSizeX() );
+			// glColor3f(mylib::ratiof(0.5, maxZ, m.getMap(x+1,y+1)), 0, 0);
+			glVertex3f( (x+1)/m.getMapSizeX(),  (y+1)/m.getMapSizeY(), 		m.getMap(x+1,y+1)/m.getMapSizeX() );
+			// glColor3f(mylib::ratiof(0.5, maxZ, m.getMap(x,y+1)), 0, 0);
+			glVertex3f( (x)/m.getMapSizeX(),	(y+1)/m.getMapSizeY(), 	  	m.getMap(x,y+1)/m.getMapSizeX() );
 
-	SDL_RenderClear(this->getRenderer());
-    SDL_SetRenderDrawColor(this->getRenderer(), 175, 95, 255, 255); //BackGround
+			// glVertex3f( (x)/m.getMapSizeX(),    (y)/m.getMapSizeX(),    	m.getMap(x,y) 		/m.getMapSizeX() );
+			// glVertex3f( (x+1)/m.getMapSizeX(),  (y+1)/m.getMapSizeX(),      m.getMap(x+1,y+1) 	/m.getMapSizeX() );
+			// glVertex3f( (x)/m.getMapSizeX(),  	(y+1)/m.getMapSizeX(), 		m.getMap(x,y+1) 	/m.getMapSizeX() );
 
-    int maxZ = m.getZMax();
+		}
+	}
+	glEnd();
+	// glPopMatrix();
 
-    for (int y = 0; y != m.getMapSizeY(); y++)
-    {
-    	for (int x = 0; x != m.getMapSizeX(); x++)
-    	{
-    		int zColor	= mylib::ratio(255, maxZ, m.getMap()[x][y]);
-    		int water 	= mylib::ratio(100, maxZ, m.getMap()[x][y]);
+	// glEndList();
+	// glCallList(list_);
+	// glDeleteLists(list_, m.getMapSizeX() * m.getMapSizeY());
 
-    		if (water <= this->waterPercent)
-    			SDL_SetRenderDrawColor(this->getRenderer(), 0, 0, 255, 0);
-    		else
-    			SDL_SetRenderDrawColor(this->getRenderer(), zColor, 0, 0, 0);
-
-    		Vector tmp = transform3dTo2d(Vector(x, y, m.getMap()[x][y]));
-    		drawRectangle(tmp.x + (this->windowSizeX * 0.8), tmp.y + (this->windowSizeY / 2), sizeX, sizeY);
-    		// drawRectangle(sizeX * x, sizeY * y, sizeX, sizeY);
-
-    	}
-    }
-
-    SDL_RenderPresent(this->getRenderer());
+	std::cout << "Passed" << std::endl;
+	SDL_RenderPresent(this->getRenderer());
 }
 
-Vector	Sdl::transform3dTo2d(Vector v) {
+// Vector	Sdl::transform3dTo2d(Vector v) {
 
-    //I've found a way to project 3D into Isometric 2D.
+//     //I've found a way to project 3D into Isometric 2D.
 
-	// I Supposed a angle for Isometric View and of course, a 3D point to project like
+// 	// I Supposed a angle for Isometric View and of course, a 3D point to project like
 
-	// Dim IsometricViewAngle As Integer = 30
-	// int IsometricViewAngle = 90;
-	// Vector v = Vector(dx,dy1,dz);
+// 	// Dim IsometricViewAngle As Integer = 30
+// 	// int IsometricViewAngle = 90;
+// 	// Vector v = Vector(dx,dy1,dz);
 
-	// which dx, dy and dz are your custom values. 
-	// then I had to calculate a Delta Value for X and Y Increments and Decrements like
+// 	// which dx, dy and dz are your custom values. 
+// 	// then I had to calculate a Delta Value for X and Y Increments and Decrements like
 
-	double XDelta = std::cos(IsometricViewAngle * M_PI / 360);
-	double YDelta = std::sin(IsometricViewAngle * M_PI / 360);
-	double ZDelta = 0.8;
+// 	double XDelta = std::cos(IsometricViewAngle * M_PI / 360);
+// 	double YDelta = std::sin(IsometricViewAngle * M_PI / 360);
+// 	double ZDelta = 0.8;
 
-	// OK, that it, now I'm going to Project 3D points into 2D point:
+// 	// OK, that it, now I'm going to Project 3D points into 2D point:
 
-	double X = (-v.x * XDelta) + (-v.y * YDelta);
-	double Y = (-v.x * XDelta) + (-v.z * ZDelta);
+// 	double X = (-v.x * XDelta) + (-v.y * YDelta);
+// 	double Y = (-v.x * XDelta) + (-v.z * ZDelta);
 
-	// Dim ProjectedPoint As New Point(X,Y)
-	return (Vector(X, Y, 0));
+// 	// Dim ProjectedPoint As New Point(X,Y)
+// 	return (Vector(X, Y, 0));
 
-}
+// }
 
 // Vector	Sdl::transform3dTo2d(Vector v) {
 
@@ -237,7 +282,7 @@ void	Sdl::createWindow() {
 		SDL_WINDOWPOS_CENTERED,
 		this->windowSizeX, 
 		this->windowSizeY, 
-		SDL_WINDOW_SHOWN);
+		SDL_WINDOW_OPENGL);
 
 	if(!this->window)
 	{

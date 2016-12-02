@@ -36,6 +36,11 @@ int			mylib::ratio(int maxVal1, int maxVal2, int yourVal) {
 	return (maxVal1 * yourVal) / maxVal2;
 }
 
+float			mylib::ratiof(float maxVal1, float maxVal2, float yourVal) {
+
+	return (maxVal1 * yourVal) / maxVal2;
+}
+
 std::list<std::string>	mylib::split(std::string str)
 {
 	int 		end;
