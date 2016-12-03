@@ -24,6 +24,12 @@ F_EXT	=	cpp
 H_EXT	=	hpp
 FOLDER	=	-I $(HDIR) -I./$(LIB_SDL)/include -I./$(LIB_SDL)/lib/
 
+ifeq ($(shell uname), Darwin)
+LIB		=	-framework OpenGL
+else
+LIB 	=	-lGL
+endif
+
 LIB_SDL 		= SDL
 PATH_SDL 		= SDL2-2.0.5
 PATH_SDL_IMG 	= SDL2_image-2.0.1
@@ -65,7 +71,7 @@ compil:
 	@echo "\033[37m END $(NAME)\033[0m"
 
 $(NAME): $(OBJ) $(SRC)
-	@$(CC) -o $(NAME) $(OBJ) $(SDL) -lGL
+	@$(CC) -o $(NAME) $(OBJ) $(SDL) $(LIB)
 
 $(ODIR)%.o: $(SDIR)%.$(F_EXT) $(HDR)
 	@$(CC) -c $< -o $@ $(FLAGS) $(FOLDER)
