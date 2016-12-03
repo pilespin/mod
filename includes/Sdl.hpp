@@ -64,6 +64,8 @@ private:
 	void			createRenderer();
 
 	void	preparateMap(Map m);
+	// void	preparateMapVertex(Map m, float x, float y, int maxZ);
+
 
 	std::map<char, void (Sdl::*)()> 		keymap;
 	std::map<std::string, SDL_Surface *> 	img;
@@ -86,6 +88,7 @@ private:
 	float 	tranZ;
 
 	GLuint	listMAP;
+	GLuint	listMAPReverse;
 	GLuint	listMAPSize;
 
 };

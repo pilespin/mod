@@ -11,8 +11,7 @@ int main()
 		Sdl 	s = Sdl();
 		Parse	p = Parse();
 
-
-		p.readFile("./data/demo4.mod1");
+		p.readFile("./data/demo5.mod1");
 		// p.printData();
 
 		Map		m = Map(p.getPointOfMap(), 20000, 20000, 100);
