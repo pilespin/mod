@@ -80,8 +80,8 @@ void	Sdl::initKey() {
 	keymap[SDL_SCANCODE_KP_4]	= &Sdl::translationXDown;
 	keymap[SDL_SCANCODE_KP_8]	= &Sdl::translationYUp;
 	keymap[SDL_SCANCODE_KP_2]	= &Sdl::translationYDown;
-	// keymap[SDL_SCANCODE_KP_4]	= &Sdl::translationZUp;
-	// keymap[SDL_SCANCODE_KP_1]	= &Sdl::translationZDown;
+	keymap[SDL_SCANCODE_KP_1]	= &Sdl::translationZUp;
+	keymap[SDL_SCANCODE_KP_0]	= &Sdl::translationZDown;
 	keymap[SDLK_SPACE]			= &Sdl::initMatrix;
 }
 
@@ -254,6 +254,9 @@ void	Sdl::preparateMap(Map m) {
 void	Sdl::draw(Map m) {
 	(void)m;
 
+	float maxZ = m.getZMax();
+
+
 	glClearColor(0.25f, 0.5f, 0.9f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); 
 
@@ -269,6 +272,73 @@ void	Sdl::draw(Map m) {
 	glTranslatef(-0.5, -0.5, 0);
 
 	glCallList(listMAP);
+
+
+
+	// std::cout << "z:	 " << maxZ << std::endl;
+	float tmp = maxZ / m.getMapSizeX();
+	// std::cout << "tmp: " << tmp << std::endl;
+	// std::cout << "X: " << m.getMapSizeX() << std::endl;
+
+	float height = mylib::ratiof(tmp, 100, waterPercent) -0.000001;
+	// std::cout << "new: " << tmp << std::endl;
+
+	glBegin(GL_POLYGON);
+	glColor4ub(0, 250, 250, 0);
+	glVertex3f( 1, 0, height );
+	glVertex3f( 1, 1, height );
+	glVertex3f( 0, 1, height );
+	glVertex3f( 0, 0, height );
+	glEnd();
+
+	///////////////////////////////////////////////////////////////////////////////////////
+	
+	// float size = 200 / m.getMapSizeX();
+
+
+
+// // Purple side - RIGHT
+// 	glBegin(GL_POLYGON);
+// 	glColor3f(  1.0,  0.0,  1.0 );
+// 	glVertex3f( size, -size, -0.1 );
+// 	glVertex3f( size,  size, -0.1 );
+// 	glVertex3f( size,  size,  0.1 );
+// 	glVertex3f( size, -size,  0.1 );
+// 	glEnd();
+
+// // Green side - LEFT
+// 	glBegin(GL_POLYGON);
+// 	glColor3f(   0.0,  1.0,  0.0 );
+// 	glVertex3f( -size, -size,  0.1 );
+// 	glVertex3f( -size,  size,  0.1 );
+// 	glVertex3f( -size,  size, -0.1 );
+// 	glVertex3f( -size, -size, -0.1 );
+// 	glEnd();
+
+// Blue side - TOP
+	// glBegin(GL_POLYGON);
+	// glColor3f(   0.0,  0.0,  1.0 );
+	// glVertex3f(  size,  size,  0.1 );
+	// glVertex3f(  size,  size, -0.1 );
+	// glVertex3f( -size,  size, -0.1 );
+	// glVertex3f( -size,  size,  0.1 );
+	// glEnd();
+
+// // Red side - BOTTOM
+// 	glBegin(GL_POLYGON);
+// 	glColor3f(   1.0,  0.0,  0.0 );
+// 	glVertex3f(  size, -size, -0.1 );
+// 	glVertex3f(  size, -size,  0.1 );
+// 	glVertex3f( -size, -size,  0.1 );
+// 	glVertex3f( -size, -size, -0.1 );
+// 	glEnd();
+			// glVertex3f( (x)/m.getMapSizeX(),    (y)/m.getMapSizeX(),    	m.getMap(x,y) 		/m.getMapSizeX() );
+			// glVertex3f( (x+1)/m.getMapSizeX(),  (y+1)/m.getMapSizeX(),      m.getMap(x+1,y+1) 	/m.getMapSizeX() );
+			// glVertex3f( (x)/m.getMapSizeX(),  	(y+1)/m.getMapSizeX(), 		m.getMap(x,y+1) 	/m.getMapSizeX() );
+	
+	///////////////////////////////////////////////////////////////////////////////////////
+
+
 
 	glPopMatrix();
 
