@@ -63,8 +63,8 @@ private:
 	void			createWindow();
 	void			createRenderer();
 
-	void	preparateMap(Map m);
-	// void	preparateMapVertex(Map m, float x, float y, int maxZ);
+	void	preparateLand(Map m);
+	void	drawWaterByGround(Map m);
 
 
 	std::map<char, void (Sdl::*)()> 		keymap;
@@ -77,7 +77,6 @@ private:
 	int 			squareSize;
 	int 			windowSizeX;
 	int 			windowSizeY;
-	// double			last_time;
 	int 			waterPercent;
 
 	int		rotX;
@@ -86,10 +85,10 @@ private:
 	float 	tranX;
 	float 	tranY;
 	float 	tranZ;
+	float 	waterWidth;
 
-	GLuint	listMAP;
-	GLuint	listMAPReverse;
-	GLuint	listMAPSize;
+	GLuint	listLAND;
+	GLuint	listLANDSize;
 
 };
 

@@ -94,6 +94,7 @@ Sdl::Sdl() {
 	window = NULL;
 	renderer = NULL;
 	waterPercent = 5;
+	waterWidth = 1;
 	initMatrix();
 }
 
@@ -174,14 +175,16 @@ void	Sdl::init(Map m) {
 	initKey();
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
-
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND); 
+	glClearColor(0.0,0.0,0.0,0.0);
     // loadImage("img/squareyellow.png", "squareyellow");
-	preparateMap(m);
+	preparateLand(m);
 }
 
 void	Sdl::quit() {
 
-	glDeleteLists(listMAP, listMAPSize);
+	glDeleteLists(listLAND, listLANDSize);
 
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
@@ -206,29 +209,20 @@ void 	Sdl::getKey(void) {
 	}
 }
 
-void	Sdl::preparateMap(Map m) {
+void	Sdl::preparateLand(Map m) {
 
 	float x;
 	float y;
 	int maxZ = m.getZMax();
 
-	listMAP = glGenLists(1);
-	listMAPSize = 0;
-	glNewList(listMAP, GL_COMPILE);
+	listLAND = glGenLists(1);
+	listLANDSize = 0;
+	glNewList(listLAND, GL_COMPILE);
 	glBegin(GL_QUADS);
 	for (y = m.getMapSizeY(); y != 0; y--)
 	{
 		for (x = m.getMapSizeX(); x != 0; x--)
 		{
-			// preparateMapVertex(m, x, y, maxZ);	
-			// float zColor	= mylib::ratiof(1, maxZ, m.getMap(x,y));
-			// std::cout << "color: " << mylib::ratiof(100, maxZ, m.getMap(x,y)) << std::endl;
-			// if (waterPercent >= mylib::ratiof(100, maxZ, m.getMap(x,y))+1)
-			// {
-			// 	// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-			// 	glColor3f(0.1,0.8,0.6);
-			// }	// glColor3f(0,0,0);
-			// else
 			glColor3f(0.5+mylib::ratiof(0.5, maxZ, m.getMap(x,y)), 0.3+mylib::ratiof(0.3, maxZ, m.getMap(x,y)), 0);
 			glVertex3f( (x)/m.getMapSizeX(),    (y)/m.getMapSizeY(),    	m.getMap(x,y)/m.getMapSizeX() );
 
@@ -240,23 +234,35 @@ void	Sdl::preparateMap(Map m) {
 
 			glColor3f(0.5+mylib::ratiof(0.5, maxZ, m.getMap(x,y+1)), 0.3+mylib::ratiof(0.3, maxZ, m.getMap(x,y+1)), 0);
 			glVertex3f( (x)/m.getMapSizeX(),	(y+1)/m.getMapSizeY(), 	  	m.getMap(x,y+1)/m.getMapSizeX() );
-
-			// glVertex3f( (x)/m.getMapSizeX(),    (y)/m.getMapSizeX(),    	m.getMap(x,y) 		/m.getMapSizeX() );
-			// glVertex3f( (x+1)/m.getMapSizeX(),  (y+1)/m.getMapSizeX(),      m.getMap(x+1,y+1) 	/m.getMapSizeX() );
-			// glVertex3f( (x)/m.getMapSizeX(),  	(y+1)/m.getMapSizeX(), 		m.getMap(x,y+1) 	/m.getMapSizeX() );
-			listMAPSize++;
+			listLANDSize++;
 		}
 	}
 	glEnd();
 	glEndList();
 }
 
+void	Sdl::drawWaterByGround(Map m) {
+
+	glBegin(GL_QUADS);
+
+	float tmp = 1.0*m.getZMax() / m.getMapSizeX();
+	float height = mylib::ratiof(tmp, 99, waterPercent) -0.000001;
+	for (float y = m.getMapSizeY(); y != 0; y--)
+	{
+		for (float x = m.getMapSizeX(); x != 0; x--)
+		{
+			glColor4f(0, 250, 250, 0.6);
+			glVertex3f( (x)/m.getMapSizeX(),    (y)/m.getMapSizeY(),    	height );
+			glVertex3f( (x+1)/m.getMapSizeX(),  (y)/m.getMapSizeY(),      	height );
+			glVertex3f( (x+1)/m.getMapSizeX(),  (y+1)/m.getMapSizeY(), 		height );
+			glVertex3f( (x)/m.getMapSizeX(),	(y+1)/m.getMapSizeY(), 	  	height );
+		}
+	}
+	glEnd();
+}
+
 void	Sdl::draw(Map m) {
 	(void)m;
-
-	float maxZ = m.getZMax();
-
-
 	glClearColor(0.25f, 0.5f, 0.9f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); 
 
@@ -271,74 +277,8 @@ void	Sdl::draw(Map m) {
 	glRotatef(rotZ, 0.0, 0.0, 1.0);
 	glTranslatef(-0.5, -0.5, 0);
 
-	glCallList(listMAP);
-
-
-
-	// std::cout << "z:	 " << maxZ << std::endl;
-	float tmp = maxZ / m.getMapSizeX();
-	// std::cout << "tmp: " << tmp << std::endl;
-	// std::cout << "X: " << m.getMapSizeX() << std::endl;
-
-	float height = mylib::ratiof(tmp, 100, waterPercent) -0.000001;
-	// std::cout << "new: " << tmp << std::endl;
-
-	glBegin(GL_POLYGON);
-	glColor4ub(0, 250, 250, 0);
-	glVertex3f( 1, 0, height );
-	glVertex3f( 1, 1, height );
-	glVertex3f( 0, 1, height );
-	glVertex3f( 0, 0, height );
-	glEnd();
-
-	///////////////////////////////////////////////////////////////////////////////////////
-	
-	// float size = 200 / m.getMapSizeX();
-
-
-
-// // Purple side - RIGHT
-// 	glBegin(GL_POLYGON);
-// 	glColor3f(  1.0,  0.0,  1.0 );
-// 	glVertex3f( size, -size, -0.1 );
-// 	glVertex3f( size,  size, -0.1 );
-// 	glVertex3f( size,  size,  0.1 );
-// 	glVertex3f( size, -size,  0.1 );
-// 	glEnd();
-
-// // Green side - LEFT
-// 	glBegin(GL_POLYGON);
-// 	glColor3f(   0.0,  1.0,  0.0 );
-// 	glVertex3f( -size, -size,  0.1 );
-// 	glVertex3f( -size,  size,  0.1 );
-// 	glVertex3f( -size,  size, -0.1 );
-// 	glVertex3f( -size, -size, -0.1 );
-// 	glEnd();
-
-// Blue side - TOP
-	// glBegin(GL_POLYGON);
-	// glColor3f(   0.0,  0.0,  1.0 );
-	// glVertex3f(  size,  size,  0.1 );
-	// glVertex3f(  size,  size, -0.1 );
-	// glVertex3f( -size,  size, -0.1 );
-	// glVertex3f( -size,  size,  0.1 );
-	// glEnd();
-
-// // Red side - BOTTOM
-// 	glBegin(GL_POLYGON);
-// 	glColor3f(   1.0,  0.0,  0.0 );
-// 	glVertex3f(  size, -size, -0.1 );
-// 	glVertex3f(  size, -size,  0.1 );
-// 	glVertex3f( -size, -size,  0.1 );
-// 	glVertex3f( -size, -size, -0.1 );
-// 	glEnd();
-			// glVertex3f( (x)/m.getMapSizeX(),    (y)/m.getMapSizeX(),    	m.getMap(x,y) 		/m.getMapSizeX() );
-			// glVertex3f( (x+1)/m.getMapSizeX(),  (y+1)/m.getMapSizeX(),      m.getMap(x+1,y+1) 	/m.getMapSizeX() );
-			// glVertex3f( (x)/m.getMapSizeX(),  	(y+1)/m.getMapSizeX(), 		m.getMap(x,y+1) 	/m.getMapSizeX() );
-	
-	///////////////////////////////////////////////////////////////////////////////////////
-
-
+	glCallList(listLAND);
+	drawWaterByGround(m);
 
 	glPopMatrix();
 
