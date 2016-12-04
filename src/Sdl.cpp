@@ -13,7 +13,7 @@ Sdl::Sdl() {
 	renderer = NULL;
 	waterPercent = 5;
 	waterWidth = 1;
-	drawMode = eDrawMode::ByGround;
+	drawMode = eDrawMode::Wave;
 	initMatrix();
 	// w = NULL;
 }
@@ -100,7 +100,7 @@ void	Sdl::init(Map m) {
 	glClearColor(0.0,0.0,0.0,0.0);
     // loadImage("img/squareyellow.png", "squareyellow");
 	preparateLand(m);
-	w = Map(std::vector<Vector> {0}, m.getMapSizeX(), m.getMapSizeY(), 1, 0.2);
+	w = Map(std::vector<Vector> {0}, m.getMapSizeX(), m.getMapSizeY(), 1, 0.0);
 	// w.printMap();
 }
 

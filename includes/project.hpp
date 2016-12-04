@@ -17,4 +17,4 @@
 
 #include "mylib.hpp"
 
-enum class eDrawMode {ByGround, Rain};
+enum class eDrawMode {ByGround, Rain, Wave};

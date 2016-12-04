@@ -72,6 +72,9 @@ void	Sdl::changeWaterMode1() {
 void	Sdl::changeWaterMode2() {
 	drawMode = eDrawMode::Rain;
 }
+void	Sdl::changeWaterMode3() {
+	drawMode = eDrawMode::Wave;
+}
 
 void	Sdl::initKey() {
 
@@ -93,6 +96,7 @@ void	Sdl::initKey() {
 	keymap[SDLK_SPACE]			= &Sdl::initMatrix;
 	keymap[SDLK_1]				= &Sdl::changeWaterMode1;
 	keymap[SDLK_2]				= &Sdl::changeWaterMode2;
+	keymap[SDLK_3]				= &Sdl::changeWaterMode3;
 }
 
 void 	Sdl::getKey(void) {

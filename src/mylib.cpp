@@ -36,9 +36,16 @@ int			mylib::ratio(int maxVal1, int maxVal2, int yourVal) {
 	return (maxVal1 * yourVal) / maxVal2;
 }
 
-float			mylib::ratiof(float maxVal1, float maxVal2, float yourVal) {
+float		mylib::ratiof(float maxVal1, float maxVal2, float yourVal) {
 
 	return (maxVal1 * yourVal) / maxVal2;
+}
+
+int 		mylib::getRandomNumber(int max) {
+	if (max <= 0)
+		return (0);
+	int x = std::rand() % max;
+	return (x);
 }
 
 std::list<std::string>	mylib::split(std::string str)

@@ -54,6 +54,7 @@ private:
 	void 	translationZUp();
 	void	changeWaterMode1();
 	void	changeWaterMode2();
+	void	changeWaterMode3();
 
 	void	initKey();
 	void 	moveToEscape();
@@ -67,7 +68,8 @@ private:
 
 	void	preparateLand(Map m);
 	void	drawWater(Map m);
-
+	void	drawRain(Map &m, Map l);
+	void	drawWave(Map &m, Map l);
 
 	std::map<char, void (Sdl::*)()> 		keymap;
 	std::map<std::string, SDL_Surface *> 	img;

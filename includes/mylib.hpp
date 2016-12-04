@@ -22,6 +22,7 @@ public:
 	static void							sleep(int ms);
 	static float						ratiof(float maxVal1, float maxVal2, float yourVal);
 	static int							ratio(int maxVal1, int maxVal2, int yourVal);
+	static int							getRandomNumber(int max);
 	static std::list<std::string>		split(std::string str);
 	static std::string 					trim(std::string str);
 	static int							intlen(int x);

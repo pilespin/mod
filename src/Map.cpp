@@ -126,6 +126,11 @@ int 	Map::getZMax() const{
 
 void	Map::assignMap(Vector v) {
 
+	// if (v.x < 0 || v.x > this->mapSizeX - 1)
+	// 	v.x = this->mapSizeX - 1;
+	// if (v.y < 0 || v.y > this->mapSizeY - 1)
+	// 	v.y = this->mapSizeY - 1;
+
 	if (v.x >= 0 && v.y >= 0 && v.x < this->mapSizeX && v.y < this->mapSizeY)
 	{
 		if (this->map[v.x][v.y] < v.z)
@@ -164,7 +169,7 @@ void	Map::printMap() {
 	{
 		for (int x = 0; x != mapSizeX; x++)
 		{
-			std::cout << this->map[x][y] << " ";
+			std::cout << std::setprecision(2) << this->map[x][y] << " ";
 			len = mylib::intlen(this->map[x][y]);
 			while (len++ < maxLen)
 				std::cout << " ";

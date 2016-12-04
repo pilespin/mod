@@ -41,12 +41,63 @@ void	Sdl::drawWater(Map m) {
 		{
 			glColor4f(0, 250, 250, 0.6);
 			glVertex3f( (x)/m.getMapSizeX(),    (y)/m.getMapSizeY(),    	m.getMap(x,y) );
-			glVertex3f( (x+1)/m.getMapSizeX(),  (y)/m.getMapSizeY(),      	m.getMap(x,y) );
-			glVertex3f( (x+1)/m.getMapSizeX(),  (y+1)/m.getMapSizeY(), 		m.getMap(x,y) );
-			glVertex3f( (x)/m.getMapSizeX(),	(y+1)/m.getMapSizeY(), 	  	m.getMap(x,y) );
+			glVertex3f( (x+1)/m.getMapSizeX(),  (y)/m.getMapSizeY(),      	m.getMap(x+1,y) );
+			glVertex3f( (x+1)/m.getMapSizeX(),  (y+1)/m.getMapSizeY(), 		m.getMap(x+1,y+1) );
+			glVertex3f( (x)/m.getMapSizeX(),	(y+1)/m.getMapSizeY(), 	  	m.getMap(x,y+1) );
 		}
 	}
 	glEnd();
+}
+
+void	Sdl::drawRain(Map &m, Map l) {
+	(void)l;
+	int x = mylib::getRandomNumber(m.getMapSizeX());
+	int y = mylib::getRandomNumber(m.getMapSizeX());
+
+	float dt = 0.001;
+	if (m.getMap(x,y) > l.getMap(x,y))
+		m.assignMap(Vector(x, y, m.getMap(x,y) + dt));
+	else
+		m.assignMap(Vector(x, y, l.getMap(x,y) + dt));
+}
+
+void	Sdl::drawWave(Map &m, Map l) {
+	(void)l;
+	int x = mylib::getRandomNumber(m.getMapSizeX());
+	int y = mylib::getRandomNumber(m.getMapSizeY());
+
+	x = 1;
+	y = 1;
+	// m.assignMap(Vector(x, y, m.getMap(x,y) + 0.1));
+	float dt = 0.001;
+	m.assignMap(Vector(x, y, m.getMap(x,y) + dt));
+	// for (float t = 0; t != 100; t++) {
+
+	for (float y = 0; y != m.getMapSizeY(); y++) {
+		for (float x = 0; x != m.getMapSizeX(); x++) {
+			if (m.getMap(x,y) - dt > m.getMap(x,y+1) && m.getMap(x,y) > l.getMap(x,y) - 1)
+			{
+				m.assignMap(Vector(x, y, m.getMap(x,y) - dt));
+				m.assignMap(Vector(x, y+1, m.getMap(x,y+1) + dt));
+			}
+			if (m.getMap(x,y) - dt > m.getMap(x,y-1) && m.getMap(x,y) > l.getMap(x,y) - 1)
+			{
+				m.assignMap(Vector(x, y, m.getMap(x,y) - dt));
+				m.assignMap(Vector(x, y-1, m.getMap(x,y-1) + dt));
+			}
+			if (m.getMap(x,y) - dt > m.getMap(x+1,y) && m.getMap(x,y) > l.getMap(x,y) - 1)
+			{
+				m.assignMap(Vector(x, y, m.getMap(x,y) - dt));
+				m.assignMap(Vector(x+1, y, m.getMap(x+1,y) + dt));
+			}
+			if (m.getMap(x,y) - dt > m.getMap(x-1,y) && m.getMap(x,y) > l.getMap(x,y) - 1)
+			{
+				m.assignMap(Vector(x, y, m.getMap(x,y) - dt));
+				m.assignMap(Vector(x-1, y, m.getMap(x-1,y) + dt));
+			}
+		}
+	}
+	// }
 }
 
 void	Sdl::draw(Map m) {
@@ -73,12 +124,22 @@ void	Sdl::draw(Map m) {
 		float height = mylib::ratiof(tmp, 99, waterPercent) -0.000001;
 		w.initMap(height);
 	}
-	else if (drawMode == eDrawMode::Rain)
+	else if (drawMode == eDrawMode::Rain) 
 	{
-		std::cout << "Rain Selected" << std::endl;
+		drawRain(w, m);
+	}
+	else if (drawMode == eDrawMode::Wave) 
+	{
+		drawWave(w, m);
 	}
 	drawWater(w);
-
+	if (m.getMapSizeX() < 20)
+	{
+		std::cout << "------------ MAP LAND ------------" << std::endl;
+		m.printMap();
+		std::cout << "------------ MAP WATER ------------" << std::endl;
+		w.printMap();
+	}
 	glPopMatrix();
 
 	SDL_RenderPresent(renderer);
