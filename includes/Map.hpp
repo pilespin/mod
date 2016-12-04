@@ -7,13 +7,14 @@
 class Map {
 
 public:
-	Map(std::vector<Vector> point, int x, int y,  int reduceFactor = 500);
+	Map();
+	Map(std::vector<Vector> point, int x, int y,  int reduceFactor = 1, float defaultAssign = 0);
 	~Map();
 	// Map(Map const &src);
 	// Map &operator=(Map const &rhs);
 
 	void		assignMap(Vector v);
-	void 		initMap(int nb = 0);
+	void 		initMap(float nb = 0);
 	void 		placePoint();
 	void		printMap();
 	int			getValue() const;
@@ -37,7 +38,6 @@ public:
 	};
 
 private:
-	Map();
 	void	placePointOnSide(int x, int y, float z, int side);
 
 	std::vector<std::vector<float>>	map;

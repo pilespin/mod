@@ -65,6 +65,14 @@ void 	Sdl::translationZDown() {
 	std::cout << "Translation Z " << tranZ << std::endl;
 }
 
+void	Sdl::changeWaterMode1() {
+	drawMode = eDrawMode::ByGround;
+}
+
+void	Sdl::changeWaterMode2() {
+	drawMode = eDrawMode::Rain;
+}
+
 void	Sdl::initKey() {
 
 	keymap[SDLK_ESCAPE]			= &Sdl::moveToEscape;
@@ -83,6 +91,8 @@ void	Sdl::initKey() {
 	keymap[SDL_SCANCODE_KP_1]	= &Sdl::translationZUp;
 	keymap[SDL_SCANCODE_KP_0]	= &Sdl::translationZDown;
 	keymap[SDLK_SPACE]			= &Sdl::initMatrix;
+	keymap[SDLK_1]				= &Sdl::changeWaterMode1;
+	keymap[SDLK_2]				= &Sdl::changeWaterMode2;
 }
 
 void 	Sdl::getKey(void) {

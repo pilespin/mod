@@ -1,5 +1,6 @@
 
 #include <project.hpp>
+#include "Map.hpp"
 #include "Sdl.hpp"
 
 Sdl::Sdl() {
@@ -12,7 +13,9 @@ Sdl::Sdl() {
 	renderer = NULL;
 	waterPercent = 5;
 	waterWidth = 1;
+	drawMode = eDrawMode::ByGround;
 	initMatrix();
+	// w = NULL;
 }
 
 Sdl::~Sdl() {
@@ -97,6 +100,8 @@ void	Sdl::init(Map m) {
 	glClearColor(0.0,0.0,0.0,0.0);
     // loadImage("img/squareyellow.png", "squareyellow");
 	preparateLand(m);
+	w = Map(std::vector<Vector> {0}, m.getMapSizeX(), m.getMapSizeY(), 1, 0.2);
+	// w.printMap();
 }
 
 void	Sdl::quit() {

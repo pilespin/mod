@@ -52,6 +52,8 @@ private:
 	void 	translationYUp();
 	void 	translationZDown();
 	void 	translationZUp();
+	void	changeWaterMode1();
+	void	changeWaterMode2();
 
 	void	initKey();
 	void 	moveToEscape();
@@ -64,7 +66,7 @@ private:
 	void			createRenderer();
 
 	void	preparateLand(Map m);
-	void	drawWaterByGround(Map m);
+	void	drawWater(Map m);
 
 
 	std::map<char, void (Sdl::*)()> 		keymap;
@@ -78,6 +80,8 @@ private:
 	int 			windowSizeX;
 	int 			windowSizeY;
 	int 			waterPercent;
+	Map				w;
+	eDrawMode 		drawMode;
 
 	int		rotX;
 	int		rotY;

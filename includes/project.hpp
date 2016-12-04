@@ -16,3 +16,5 @@
 #include <map>
 
 #include "mylib.hpp"
+
+enum class eDrawMode {ByGround, Rain};

@@ -3,7 +3,7 @@
 
 Map::Map() {}
 
-Map::Map(std::vector<Vector> point, int x, int y, int reduceFactor) {
+Map::Map(std::vector<Vector> point, int x, int y, int reduceFactor, float defaultAssign) {
 
 	if (x > 0 && y > 0)
 	{
@@ -12,7 +12,7 @@ Map::Map(std::vector<Vector> point, int x, int y, int reduceFactor) {
 		this->mapSizeX		= x / reduceFactor;
 		this->mapSizeY		= y / reduceFactor;
 		this->point = point;
-		this->initMap(0);
+		this->initMap(defaultAssign);
 		this->placePoint();	
 	}
 	else
@@ -135,7 +135,7 @@ void	Map::assignMap(Vector v) {
 		// throw Msg("This value is out of map");
 }
 
-void	Map::initMap(int nb) {
+void	Map::initMap(float nb) {
 
 	std::vector<std::vector<float>> vec(mapSizeX, std::vector<float>(mapSizeY));
 	this->map = vec;

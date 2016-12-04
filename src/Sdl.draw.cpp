@@ -32,21 +32,18 @@ void	Sdl::preparateLand(Map m) {
 	glEndList();
 }
 
-void	Sdl::drawWaterByGround(Map m) {
+void	Sdl::drawWater(Map m) {
 
 	glBegin(GL_QUADS);
-
-	float tmp = 1.0*m.getZMax() / m.getMapSizeX();
-	float height = mylib::ratiof(tmp, 99, waterPercent) -0.000001;
 	for (float y = m.getMapSizeY(); y != 0; y--)
 	{
 		for (float x = m.getMapSizeX(); x != 0; x--)
 		{
 			glColor4f(0, 250, 250, 0.6);
-			glVertex3f( (x)/m.getMapSizeX(),    (y)/m.getMapSizeY(),    	height );
-			glVertex3f( (x+1)/m.getMapSizeX(),  (y)/m.getMapSizeY(),      	height );
-			glVertex3f( (x+1)/m.getMapSizeX(),  (y+1)/m.getMapSizeY(), 		height );
-			glVertex3f( (x)/m.getMapSizeX(),	(y+1)/m.getMapSizeY(), 	  	height );
+			glVertex3f( (x)/m.getMapSizeX(),    (y)/m.getMapSizeY(),    	m.getMap(x,y) );
+			glVertex3f( (x+1)/m.getMapSizeX(),  (y)/m.getMapSizeY(),      	m.getMap(x,y) );
+			glVertex3f( (x+1)/m.getMapSizeX(),  (y+1)/m.getMapSizeY(), 		m.getMap(x,y) );
+			glVertex3f( (x)/m.getMapSizeX(),	(y+1)/m.getMapSizeY(), 	  	m.getMap(x,y) );
 		}
 	}
 	glEnd();
@@ -69,7 +66,18 @@ void	Sdl::draw(Map m) {
 	glTranslatef(-0.5, -0.5, 0);
 
 	glCallList(listLAND);
-	drawWaterByGround(m);
+
+	if (drawMode == eDrawMode::ByGround)
+	{
+		float tmp = 1.0*m.getZMax() / m.getMapSizeX();
+		float height = mylib::ratiof(tmp, 99, waterPercent) -0.000001;
+		w.initMap(height);
+	}
+	else if (drawMode == eDrawMode::Rain)
+	{
+		std::cout << "Rain Selected" << std::endl;
+	}
+	drawWater(w);
 
 	glPopMatrix();
 
