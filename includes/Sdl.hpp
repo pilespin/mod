@@ -67,6 +67,7 @@ private:
 	void			createRenderer();
 
 	void	preparateLand(Map m);
+	void	drawFourSide(Map m);
 	void	drawWater(Map m);
 	void	drawRain(Map &m, Map l);
 	void	drawWave(Map &m, Map l);

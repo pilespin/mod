@@ -32,8 +32,57 @@ void	Sdl::preparateLand(Map m) {
 	glEndList();
 }
 
+void	Sdl::drawFourSide(Map m) {
+	
+	float x = -1;
+	float y = 1;
+	
+	glBegin(GL_QUADS);
+	for (x = 1; x != m.getMapSizeX()+1; x++)
+	{
+		glColor4f(0, 250, 250, 0.6);
+		glVertex3f( (x)/m.getMapSizeX(),    (y)/m.getMapSizeY(),    	0 );
+		glVertex3f( (x+1)/m.getMapSizeX(),  (y)/m.getMapSizeY(),      	0 );
+		glVertex3f( (x+1)/m.getMapSizeX(),  (y)/m.getMapSizeY(), 		m.getMap(x+1,y+1) );
+		glVertex3f( (x)/m.getMapSizeX(),	(y)/m.getMapSizeY(), 	  	m.getMap(x,y+1) );
+	}
+
+	y = m.getMapSizeY() + 1;
+	for (x = 1; x != m.getMapSizeX()+1; x++)
+	{
+		glColor4f(0, 250, 250, 0.6);
+		glVertex3f( (x)/m.getMapSizeX(),    (y)/m.getMapSizeY(),    	0 );
+		glVertex3f( (x+1)/m.getMapSizeX(),  (y)/m.getMapSizeY(),      	0 );
+		glVertex3f( (x+1)/m.getMapSizeX(),  (y)/m.getMapSizeY(), 		m.getMap(x+1,y+1) );
+		glVertex3f( (x)/m.getMapSizeX(),	(y)/m.getMapSizeY(), 	  	m.getMap(x,y+1) );
+	}
+
+	x = 1;
+	for (y = 1; y != m.getMapSizeY()+1; y++)
+	{
+		glColor4f(0, 250, 250, 0.6);
+		glVertex3f( (x)/m.getMapSizeX(),    (y)/m.getMapSizeY(),    	0 );
+		glVertex3f( (x)/m.getMapSizeX(),  (y+1)/m.getMapSizeY(),      	0 );
+		glVertex3f( (x)/m.getMapSizeX(),  (y+1)/m.getMapSizeY(), 		m.getMap(x+1,y+1) );
+		glVertex3f( (x)/m.getMapSizeX(),	(y)/m.getMapSizeY(), 	  	m.getMap(x,y+1) );
+	}
+
+	x = m.getMapSizeX() + 1;
+	for (y = 1; y != m.getMapSizeY()+1; y++)
+	{
+		glColor4f(0, 250, 250, 0.6);
+		glVertex3f( (x)/m.getMapSizeX(),    (y)/m.getMapSizeY(),    	0 );
+		glVertex3f( (x)/m.getMapSizeX(),  (y+1)/m.getMapSizeY(),      	0 );
+		glVertex3f( (x)/m.getMapSizeX(),  (y+1)/m.getMapSizeY(), 		m.getMap(x+1,y+1) );
+		glVertex3f( (x)/m.getMapSizeX(),	(y)/m.getMapSizeY(), 	  	m.getMap(x,y+1) );
+	}
+	glEnd();
+}
+
 void	Sdl::drawWater(Map m) {
 
+	drawFourSide(m);
+	
 	glBegin(GL_QUADS);
 	for (float y = m.getMapSizeY(); y != 0; y--)
 	{
@@ -92,7 +141,7 @@ void	Sdl::drawRain(Map &m, Map l) {
 			}
 		}
 	}
-			mylib::sleep(100);
+	mylib::sleep(100);
 	// }
 
 }
