@@ -71,7 +71,7 @@ private:
 	void	drawRain(Map &m, Map l);
 	void	drawWave(Map &m, Map l);
 
-	std::map<char, void (Sdl::*)()> 		keymap;
+	std::map<unsigned char, void (Sdl::*)()> 		keymap;
 	std::map<std::string, SDL_Surface *> 	img;
 
 	int 			_val;

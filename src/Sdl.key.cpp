@@ -94,9 +94,13 @@ void	Sdl::initKey() {
 	keymap[SDL_SCANCODE_KP_1]	= &Sdl::translationZUp;
 	keymap[SDL_SCANCODE_KP_0]	= &Sdl::translationZDown;
 	keymap[SDLK_SPACE]			= &Sdl::initMatrix;
+	keymap[38]					= &Sdl::changeWaterMode1;
 	keymap[SDLK_1]				= &Sdl::changeWaterMode1;
+	keymap[233]					= &Sdl::changeWaterMode2;
 	keymap[SDLK_2]				= &Sdl::changeWaterMode2;
+	keymap[34]					= &Sdl::changeWaterMode3;
 	keymap[SDLK_3]				= &Sdl::changeWaterMode3;
+	
 }
 
 void 	Sdl::getKey(void) {
@@ -111,6 +115,7 @@ void 	Sdl::getKey(void) {
 		}
 		else if (e.type == SDL_KEYDOWN)
 		{
+			// std::cout << "pressed: " << e.key.keysym.sym << std::endl;
 			if (keymap[e.key.keysym.sym])
 				(this->*(keymap[e.key.keysym.sym]))();
 		}
