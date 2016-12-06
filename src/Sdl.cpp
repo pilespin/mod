@@ -16,6 +16,9 @@ Sdl::Sdl() {
 	drawMode = eDrawMode::Wave;
 	initMatrix();
 	LANDMaxZ = 0;
+	mousePosX = 0;
+	mousePosY = 0;
+	mouseMoving = false;
 	// w = NULL;
 }
 

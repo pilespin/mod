@@ -94,6 +94,10 @@ private:
 	float 	tranZ;
 	float 	waterWidth;
 
+	float		mousePosX;
+	float		mousePosY;
+	bool		mouseMoving;
+
 	GLuint	listLAND;
 	GLuint	listLANDSize;
 	float 	LANDMaxZ;

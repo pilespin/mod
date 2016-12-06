@@ -119,5 +119,28 @@ void 	Sdl::getKey(void) {
 			if (keymap[e.key.keysym.sym])
 				(this->*(keymap[e.key.keysym.sym]))();
 		}
+		else if (e.type == SDL_MOUSEBUTTONDOWN)
+		{
+			std::cout << "Mouse DOWN" << std::endl;
+			mousePosX = e.motion.x;
+			mousePosY = e.motion.y;
+			mouseMoving = true;
+		}
+		else if (e.type == SDL_MOUSEBUTTONUP)
+		{
+			std::cout << "Mouse UP" << std::endl;
+			mouseMoving = false;	
+		}
+		if (mouseMoving)
+		{	
+			if (e.motion.x >= 0 && e.motion.x <= windowSizeX && 
+				e.motion.y >= 0 && e.motion.y <= windowSizeY)
+			{
+				rotZ -= e.motion.x - mousePosX;
+				rotX -= e.motion.y - mousePosY;
+				mousePosX = e.motion.x;
+				mousePosY = e.motion.y;
+			}
+		}
 	}
 }
