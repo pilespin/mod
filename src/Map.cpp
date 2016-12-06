@@ -109,7 +109,7 @@ void	Map::placePoint() {
 	}
 }
 
-int 	Map::getZMax() const{
+float 	Map::getZMax() const{
 
 	float maxSize	= 0;
 

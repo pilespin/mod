@@ -20,7 +20,7 @@ public:
 	int			getValue() const;
 	int			getMapSizeX() const;
 	int			getMapSizeY() const;
-	int 		getZMax() const;
+	float 		getZMax() const;
 	void		empty();
 	float		getMap(int x, int y);
 

@@ -79,19 +79,28 @@ void	Sdl::drawFourSide(Map m) {
 	glEnd();
 }
 
-void	Sdl::drawWater(Map m) {
+void	Sdl::drawWater(Map m, Map l) {
 
 	drawFourSide(m);
-	
+
+	float tmp = 0;
+	float dt = 0.5;
 	glBegin(GL_QUADS);
 	for (float y = m.getMapSizeY(); y != 0; y--)
 	{
 		for (float x = m.getMapSizeX(); x != 0; x--)
 		{
-			glColor4f(0, 250, 250, 0.6);
+			tmp = 0.5+mylib::ratiof(dt ,LANDMaxZ, m.getMap(x,y) - l.getMap(x,y)/m.getMapSizeX());
+			glColor4f(0, 200, 200, tmp);
 			glVertex3f( (x)/m.getMapSizeX(),    (y)/m.getMapSizeY(),    	m.getMap(x,y) );
+			tmp = 0.5+mylib::ratiof(dt ,LANDMaxZ, m.getMap(x+1,y) - l.getMap(x+1,y)/m.getMapSizeX());
+			glColor4f(0, 200, 200, tmp);
 			glVertex3f( (x+1)/m.getMapSizeX(),  (y)/m.getMapSizeY(),      	m.getMap(x+1,y) );
+			tmp = 0.5+mylib::ratiof(dt ,LANDMaxZ, m.getMap(x+1,y+1) - l.getMap(x+1,y+1)/m.getMapSizeX());
+			glColor4f(0, 200, 200, tmp);
 			glVertex3f( (x+1)/m.getMapSizeX(),  (y+1)/m.getMapSizeY(), 		m.getMap(x+1,y+1) );
+			tmp = 0.5+mylib::ratiof(dt ,LANDMaxZ, m.getMap(x,y+1) - l.getMap(x,y+1)/m.getMapSizeX());
+			glColor4f(0, 200, 200, tmp);
 			glVertex3f( (x)/m.getMapSizeX(),	(y+1)/m.getMapSizeY(), 	  	m.getMap(x,y+1) );
 		}
 	}
@@ -221,8 +230,7 @@ void	Sdl::draw(Map m) {
 
 	if (drawMode == eDrawMode::ByGround)
 	{
-		float tmp = 1.0*m.getZMax() / m.getMapSizeX();
-		float height = mylib::ratiof(tmp, 99, waterPercent) -0.000001;
+		float height = mylib::ratiof(LANDMaxZ, 99, waterPercent) -0.000001;
 		w.initMap(height);
 	}
 	else if (drawMode == eDrawMode::Rain) 
@@ -233,7 +241,7 @@ void	Sdl::draw(Map m) {
 	{
 		drawWave(w, m);
 	}
-	drawWater(w);
+	drawWater(w, m);
 
 	if (m.getMapSizeX() < 20)
 	{

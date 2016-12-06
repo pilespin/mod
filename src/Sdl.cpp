@@ -15,6 +15,7 @@ Sdl::Sdl() {
 	waterWidth = 1;
 	drawMode = eDrawMode::Wave;
 	initMatrix();
+	LANDMaxZ = 0;
 	// w = NULL;
 }
 
@@ -101,6 +102,7 @@ void	Sdl::init(Map m) {
     // loadImage("img/squareyellow.png", "squareyellow");
 	preparateLand(m);
 	w = Map(std::vector<Vector> {0}, m.getMapSizeX(), m.getMapSizeY(), 1, 0.0);
+	LANDMaxZ = m.getZMax() / m.getMapSizeX();
 	// w.printMap();
 }
 

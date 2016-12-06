@@ -68,7 +68,7 @@ private:
 
 	void	preparateLand(Map m);
 	void	drawFourSide(Map m);
-	void	drawWater(Map m);
+	void	drawWater(Map m, Map l);
 	void	drawRain(Map &m, Map l);
 	void	drawWave(Map &m, Map l);
 
@@ -96,6 +96,7 @@ private:
 
 	GLuint	listLAND;
 	GLuint	listLANDSize;
+	float 	LANDMaxZ;
 
 };
 
