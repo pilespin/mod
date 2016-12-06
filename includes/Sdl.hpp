@@ -55,6 +55,8 @@ private:
 	void	changeWaterMode1();
 	void	changeWaterMode2();
 	void	changeWaterMode3();
+	void 	zoomIn();
+	void 	zoomOut();
 
 	void	initKey();
 	void 	moveToEscape();
@@ -92,11 +94,16 @@ private:
 	float 	tranX;
 	float 	tranY;
 	float 	tranZ;
+	float 	scaleX;
+	float 	scaleY;
+	float 	scaleZ;
+
 	float 	waterWidth;
 
 	float		mousePosX;
 	float		mousePosY;
 	bool		mouseMoving;
+	bool		mouseMovingTranslation;
 
 	GLuint	listLAND;
 	GLuint	listLANDSize;

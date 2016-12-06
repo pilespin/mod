@@ -76,6 +76,22 @@ void	Sdl::changeWaterMode3() {
 	drawMode = eDrawMode::Wave;
 }
 
+void 	Sdl::zoomIn() {	
+	scaleX += 0.1;
+	scaleY += 0.1;
+	std::cout << "Zoom IN" << std::endl;
+}
+
+void 	Sdl::zoomOut() {	
+	scaleX -= 0.1;
+	scaleY -= 0.1;
+	if (scaleX < 0.1)
+		scaleX = 0.1;
+	if (scaleY < 0.1)
+		scaleY = 0.1;
+	std::cout << "Zoom OUT" << std::endl;
+}
+
 void	Sdl::initKey() {
 
 	keymap[SDLK_ESCAPE]			= &Sdl::moveToEscape;
@@ -100,6 +116,8 @@ void	Sdl::initKey() {
 	keymap[SDLK_2]				= &Sdl::changeWaterMode2;
 	keymap[34]					= &Sdl::changeWaterMode3;
 	keymap[SDLK_3]				= &Sdl::changeWaterMode3;
+	keymap[SDL_SCANCODE_KP_PLUS]	= &Sdl::zoomIn;
+	keymap[SDL_SCANCODE_KP_MINUS]	= &Sdl::zoomOut;
 	
 }
 
@@ -119,25 +137,55 @@ void 	Sdl::getKey(void) {
 			if (keymap[e.key.keysym.sym])
 				(this->*(keymap[e.key.keysym.sym]))();
 		}
-		else if (e.type == SDL_MOUSEBUTTONDOWN)
+		else if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_RIGHT)
 		{
-			std::cout << "Mouse DOWN" << std::endl;
+			std::cout << "Mouse Right DOWN" << std::endl;
 			mousePosX = e.motion.x;
 			mousePosY = e.motion.y;
 			mouseMoving = true;
 		}
-		else if (e.type == SDL_MOUSEBUTTONUP)
+		else if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT)
 		{
-			std::cout << "Mouse UP" << std::endl;
+			std::cout << "Mouse Left DOWN" << std::endl;
+			mousePosX = e.motion.x;
+			mousePosY = e.motion.y;
+			mouseMovingTranslation = true;
+		}
+		else if (e.type == SDL_MOUSEBUTTONUP && e.button.button == SDL_BUTTON_RIGHT)
+		{
+			std::cout << "Mouse Right UP" << std::endl;
 			mouseMoving = false;	
+		}
+		else if (e.type == SDL_MOUSEBUTTONUP && e.button.button == SDL_BUTTON_LEFT)
+		{
+			std::cout << "Mouse Left UP" << std::endl;
+			mouseMovingTranslation = false;	
+		}
+		else if (SDL_MOUSEWHEEL)
+		{
+			if (e.wheel.y == 1)
+				zoomIn();
+			else if (e.wheel.y == -1)
+				zoomOut();
 		}
 		if (mouseMoving)
 		{	
-			if (e.motion.x >= 0 && e.motion.x <= windowSizeX && 
-				e.motion.y >= 0 && e.motion.y <= windowSizeY)
+			if (e.motion.x > 0 && e.motion.x <= windowSizeX && 
+				e.motion.y > 0 && e.motion.y <= windowSizeY)
 			{
 				rotZ -= e.motion.x - mousePosX;
 				rotX -= e.motion.y - mousePosY;
+				mousePosX = e.motion.x;
+				mousePosY = e.motion.y;
+			}
+		}
+		if (mouseMovingTranslation)
+		{	
+			if (e.motion.x > 0 && e.motion.x <= windowSizeX && 
+				e.motion.y > 0 && e.motion.y <= windowSizeY)
+			{
+				tranX += (e.motion.x - mousePosX) / (windowSizeX / 2) / scaleX ;
+				tranY -= (e.motion.y - mousePosY) / (windowSizeX / 2) / scaleY ;
 				mousePosX = e.motion.x;
 				mousePosY = e.motion.y;
 			}

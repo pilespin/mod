@@ -219,6 +219,8 @@ void	Sdl::draw(Map m) {
 	// glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();
+
+	glScalef(scaleX ,scaleY, scaleZ);
 	glTranslatef(tranX, tranY, tranZ);
 	glTranslatef(0.5, 0.5, 0);
 	glRotatef(rotX, 1.0, 0.0, 0.0);

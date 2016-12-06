@@ -19,6 +19,7 @@ Sdl::Sdl() {
 	mousePosX = 0;
 	mousePosY = 0;
 	mouseMoving = false;
+	mouseMovingTranslation = false;
 	// w = NULL;
 }
 
@@ -84,6 +85,9 @@ void	Sdl::initMatrix() {
 	tranX 	= -0.5;
 	tranY 	= -0.5;
 	tranZ 	= 0;
+	scaleX	= 1;
+	scaleY	= 1;
+	scaleZ	= 1;
 }
 
 void	Sdl::init(Map m) {
