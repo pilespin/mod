@@ -112,6 +112,9 @@ void	Sdl::drawRain(Map &m, Map l) {
 	int x = mylib::getRandomNumber(m.getMapSizeX());
 	int y = mylib::getRandomNumber(m.getMapSizeX());
 
+	// x = m.getMapSizeX()/2;
+	// y = m.getMapSizeX()/2;
+
 	float dt = 0.001;
 	float add = dt/(m.getMapSizeX()/4);
 	if (m.getMap(x,y) > l.getMap(x,y))
@@ -122,7 +125,7 @@ void	Sdl::drawRain(Map &m, Map l) {
 		// for (float t = 0; t != 5; t++) {
 
 	drainWater(m, l);
-	mylib::sleep(100);
+	// mylib::sleep(1);
 	// }
 
 }
@@ -191,7 +194,15 @@ void	Sdl::drawWave(Map &m, Map l) {
 
 void	Sdl::draw(Map m) {
 	(void)m;
-	glClearColor(0.25f, 0.5f, 0.9f, 0.0f);
+
+	///////////////// FPS /////////////////
+	static int t = time(NULL); 
+	static int a = 0;
+	static int b = 0;
+	///////////////// FPS /////////////////
+
+	glClearColor(0, 0, 0, 0);
+	// glClearColor(0.25f, 0.5f, 0.9f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); 
 
 	// glMatrixMode(GL_PROJECTION);
@@ -233,6 +244,17 @@ void	Sdl::draw(Map m) {
 	}
 
 	glPopMatrix();
+
+	///////////////// FPS /////////////////
+	if (std::time(NULL) > t)
+	{
+		t = time(NULL);
+		b = a;
+		a = 0;
+	}
+	std::cout<<b<<std::endl;
+	a++;
+	///////////////// FPS /////////////////
 
 	SDL_RenderPresent(renderer);
 }
