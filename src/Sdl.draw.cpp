@@ -121,61 +121,16 @@ void	Sdl::drawRain(Map &m, Map l) {
 
 		// for (float t = 0; t != 5; t++) {
 
-	for (float y = 0; y != m.getMapSizeY(); y++) {
-		for (float x = 0; x != m.getMapSizeX(); x++) {
-			// std::cout << "first : " << m.getMap(x,y) << std::endl;
-			// std::cout << "second: " << l.getMap(x,y)/m.getMapSizeX() << std::endl;
-			if (m.getMap(x,y) > 0)
-			{
-				if (m.getMap(x,y) - dt >= m.getMap(x,y+1) && m.getMap(x,y) > l.getMap(x,y+1)/m.getMapSizeX())
-				{
-					m.assignMap(Vector(x, y, m.getMap(x,y) - dt));
-					m.assignMap(Vector(x, y+1, m.getMap(x,y+1) + dt));
-				}
-				if (m.getMap(x,y) - dt >= m.getMap(x,y-1) && m.getMap(x,y) > l.getMap(x,y-1)/m.getMapSizeX())
-				{
-					m.assignMap(Vector(x, y, m.getMap(x,y) - dt));
-					m.assignMap(Vector(x, y-1, m.getMap(x,y-1) + dt));
-				}
-				if (m.getMap(x,y) - dt >= m.getMap(x+1,y) && m.getMap(x,y) > l.getMap(x+1,y)/m.getMapSizeX())
-				{
-					m.assignMap(Vector(x, y, m.getMap(x,y) - dt));
-					m.assignMap(Vector(x+1, y, m.getMap(x+1,y) + dt));
-				}
-				if (m.getMap(x,y) - dt >= m.getMap(x-1,y) && m.getMap(x,y) > l.getMap(x-1,y)/m.getMapSizeX())
-				{
-					m.assignMap(Vector(x, y, m.getMap(x,y) - dt));
-					m.assignMap(Vector(x-1, y, m.getMap(x-1,y) + dt));
-				}
-			}
-		}
-	}
+	drainWater(m, l);
 	mylib::sleep(100);
 	// }
 
 }
 
-void	Sdl::drawWave(Map &m, Map l) {
-	(void)l;
-	// static int passage = 0;
-	// passage++;
-	// int x = mylib::getRandomNumber(m.getMapSizeX());
-	// int y = mylib::getRandomNumber(m.getMapSizeY());
-
-	// x = 1;
-	// y = 1;
-	// m.assignMap(Vector(x, y, m.getMap(x,y) + 0.1));
+void	Sdl::drainWater(Map &m, Map l) {
+	
 	float dt = 0.0001;
-	float add = dt/(m.getMapSizeX()/4);
-	// float wav = 0.001;
-	// if (passage >= m.getMapSizeX())
-	// {
-		// passage = 0;
-	m.assignMap(Vector(1, 1, m.getMap(1, 1) + add));
-	m.assignMap(Vector(1, m.getMapSizeY()-1, m.getMap(1,m.getMapSizeY()-1) + add));
-	m.assignMap(Vector(m.getMapSizeX()-1, 1, m.getMap(m.getMapSizeX()-1, 1) + add));
-	m.assignMap(Vector(m.getMapSizeX()-1, m.getMapSizeY()-1, m.getMap(m.getMapSizeX()-1,m.getMapSizeY()-1) + add));
-	// }
+
 	for (float t = 0; t != 5; t++) {
 
 		for (float y = 0; y != m.getMapSizeY(); y++) {
@@ -208,6 +163,30 @@ void	Sdl::drawWave(Map &m, Map l) {
 			}
 		}
 	}
+}
+
+void	Sdl::drawWave(Map &m, Map l) {
+	(void)l;
+	// static int passage = 0;
+	// passage++;
+	// int x = mylib::getRandomNumber(m.getMapSizeX());
+	// int y = mylib::getRandomNumber(m.getMapSizeY());
+
+	// x = 1;
+	// y = 1;
+	// m.assignMap(Vector(x, y, m.getMap(x,y) + 0.1));
+	float dt = 0.0001;
+	float add = dt/(m.getMapSizeX()/4);
+	// float wav = 0.001;
+	// if (passage >= m.getMapSizeX())
+	// {
+		// passage = 0;
+	m.assignMap(Vector(1, 1, m.getMap(1, 1) + add));
+	// m.assignMap(Vector(1, m.getMapSizeY()-1, m.getMap(1,m.getMapSizeY()-1) + add));
+	// m.assignMap(Vector(m.getMapSizeX()-1, 1, m.getMap(m.getMapSizeX()-1, 1) + add));
+	// m.assignMap(Vector(m.getMapSizeX()-1, m.getMapSizeY()-1, m.getMap(m.getMapSizeX()-1,m.getMapSizeY()-1) + add));
+	// }
+	drainWater(m, l);
 }
 
 void	Sdl::draw(Map m) {
