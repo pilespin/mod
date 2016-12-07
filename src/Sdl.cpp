@@ -153,7 +153,7 @@ void	Sdl::createWindow() {
 
 void	Sdl::createRenderer() {
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	if (!renderer)
 	{
 		SDL_DestroyWindow(window);
