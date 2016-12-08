@@ -32,6 +32,38 @@ void	Sdl::preparateLand(Map m) {
 	glEndList();
 }
 
+int getRandomNumber(int max, int min)
+{
+	return (std::rand() % (max - min));
+}
+
+void Sdl::drawlineRain(Map m)
+{
+	listrain = glGenLists(1);
+	listrainSize = 0;
+	glNewList(listrain, GL_COMPILE);
+	glBegin(GL_LINES);
+	for (int s = 15; s != 0; s--)
+	{
+		// std::cout << getRandomNumber(m.getMapSizeX(), 0)<<std::endl;
+		float x = static_cast<float>(getRandomNumber(m.getMapSizeX(), 0)) / m.getMapSizeX();
+		float y = static_cast<float>(getRandomNumber(m.getMapSizeY(), 0)) /m.getMapSizeY();
+		float z = static_cast<float>(getRandomNumber(50, 0)) /m.getMapSizeX();
+		
+				
+				glColor4f(0, 150, 250, 0.6);
+
+				glVertex3f( x,  y,      	z );
+				glVertex3f( x,  y,      	z+0.3 );
+
+
+		listrainSize ++;	
+	}
+	glEnd();
+	glEndList();
+
+}
+
 void	Sdl::drawFourSide(Map m) {
 	
 	float x = -1;
@@ -200,6 +232,7 @@ void	Sdl::calcFps() {
 
 void	Sdl::printFps() {
 
+
 	static int t = time(NULL); 
 
 	if (std::time(NULL) > t)
@@ -211,7 +244,7 @@ void	Sdl::printFps() {
 
 void	Sdl::draw(Map m) {
 	(void)m;
-	
+	static int i = 0;
 	calcFps();
 	printFps();
 
@@ -233,6 +266,10 @@ void	Sdl::draw(Map m) {
 	glTranslatef(-0.5, -0.5, 0);
 
 	glCallList(listLAND);
+
+	if (i % 4 == 0)
+		drawlineRain(m);
+	glCallList(listrain);
 
 	if (drawMode == eDrawMode::ByGround)
 	{
@@ -260,4 +297,8 @@ void	Sdl::draw(Map m) {
 	glPopMatrix();
 
 	SDL_RenderPresent(renderer);
+	if (i % 2 == 0)
+		glDeleteLists(listrain, listrainSize);
+	i++;
+	// glDeleteLists(listLAND, listLANDSize);
 }
