@@ -8,7 +8,8 @@ Sdl::Sdl() {
 	windowSizeX = 800;
 	windowSizeY = 800;
 	windowName = "No name";
-	// last_time = mylib::utime();
+	lastTime = mylib::utime();
+	fps = 0;
 	window = NULL;
 	renderer = NULL;
 	waterPercent = 5;

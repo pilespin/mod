@@ -192,14 +192,28 @@ void	Sdl::drawWave(Map &m, Map l) {
 	drainWater(m, l);
 }
 
+void	Sdl::calcFps() {
+	double new_time = mylib::utime();
+	fps = 1 / (new_time - lastTime);
+	lastTime = new_time;
+}
+
+void	Sdl::printFps() {
+
+	static int t = time(NULL); 
+
+	if (std::time(NULL) > t)
+	{
+		t = time(NULL);
+		std::cout << fps << " FPS" << std::endl;
+	}
+}
+
 void	Sdl::draw(Map m) {
 	(void)m;
-
-	///////////////// FPS /////////////////
-	static int t = time(NULL); 
-	static int a = 0;
-	static int b = 0;
-	///////////////// FPS /////////////////
+	
+	calcFps();
+	printFps();
 
 	glClearColor(0, 0, 0, 0);
 	// glClearColor(0.25f, 0.5f, 0.9f, 0.0f);
@@ -244,17 +258,6 @@ void	Sdl::draw(Map m) {
 	}
 
 	glPopMatrix();
-
-	///////////////// FPS /////////////////
-	if (std::time(NULL) > t)
-	{
-		t = time(NULL);
-		b = a;
-		a = 0;
-	}
-	std::cout<<b<<std::endl;
-	a++;
-	///////////////// FPS /////////////////
 
 	SDL_RenderPresent(renderer);
 }
