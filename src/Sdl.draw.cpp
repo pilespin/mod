@@ -141,18 +141,26 @@ void	Sdl::drawWater(Map m, Map l) {
 
 void	Sdl::drawRain(Map &m, Map l) {
 	(void)l;
-	int x = mylib::getRandomNumber(m.getMapSizeX());
-	int y = mylib::getRandomNumber(m.getMapSizeX());
+	// int x = mylib::getRandomNumber(m.getMapSizeX());
+	// int y = mylib::getRandomNumber(m.getMapSizeX());
 
 	// x = m.getMapSizeX()/2;
 	// y = m.getMapSizeX()/2;
 
-	float dt = 0.001;
-	float add = dt/(m.getMapSizeX()/4);
-	if (m.getMap(x,y) > l.getMap(x,y))
-		m.assignMap(Vector(x, y, m.getMap(x,y)/m.getMapSizeX() + add));
-	else
-		m.assignMap(Vector(x, y, l.getMap(x,y)/m.getMapSizeX() + add));
+	// float dt = 0.0001;
+	// float add = dt/(m.getMapSizeX()/4);
+	// if (m.getMap(x,y) > l.getMap(x,y))
+	// 	m.assignMap(Vector(x, y, m.getMap(x,y)/m.getMapSizeX() + add));
+	// else
+	// 	m.assignMap(Vector(x, y, l.getMap(x,y)/m.getMapSizeX() + add));
+
+	for (unsigned long int  i = 0; i < l.cuve.size(); i++)
+	{
+
+		std::cout<< l.cuve[i][2] << " "<< l.getMap(l.cuve[i][0], l.cuve[i][1])<< " "<< l.cuve[i][0]<< " "<< l.cuve[i][1] <<std::endl;
+		m.assignMap(Vector(l.cuve[i][0], l.cuve[i][1], l.getMap(l.cuve[i][0], l.cuve[i][1]) / l.getMapSizeX() + 0.00001));
+	}
+		std::cout<<std::endl;
 
 		// for (float t = 0; t != 5; t++) {
 

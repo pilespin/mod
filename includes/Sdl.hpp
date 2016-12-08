@@ -74,6 +74,7 @@ private:
 	void	drawRain(Map &m, Map l);
 	void	drawWave(Map &m, Map l);
 	void	drainWater(Map &m, Map l);
+void drawlineRain(Map m);
 
 	void	calcFps();
 	void	printFps();
@@ -112,6 +113,8 @@ private:
 	bool		mouseMovingTranslation;
 
 	GLuint	listLAND;
+	GLuint	listrain;
+	int listrainSize;
 	GLuint	listLANDSize;
 	float 	LANDMaxZ;
 
