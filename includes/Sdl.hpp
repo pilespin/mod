@@ -75,6 +75,9 @@ private:
 	void	drawWave(Map &m, Map l);
 	void	drainWater(Map &m, Map l);
 
+	void	calcFps();
+	void	printFps();
+
 	std::map<unsigned char, void (Sdl::*)()> 		keymap;
 	std::map<std::string, SDL_Surface *> 	img;
 
@@ -83,6 +86,8 @@ private:
 	SDL_Renderer	*renderer;
 	std::string		windowName;
 	int 			squareSize;
+	double 			lastTime;
+	int 			fps;
 	int 			windowSizeX;
 	int 			windowSizeY;
 	int 			waterPercent;

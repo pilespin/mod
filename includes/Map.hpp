@@ -25,6 +25,7 @@ public:
 	float		getMap(int x, int y);
 
 	std::list<float> getCosineLine(float z);
+	std::vector<std::vector<float>>	cuve;
 
 	// const std::vector<std::vector<int>>	&getMap() const;	
 
@@ -36,6 +37,7 @@ public:
 	private:
 		std::string line;
 	};
+	void 	getcuve();
 
 private:
 	void	placePointOnSide(int x, int y, float z, int side);

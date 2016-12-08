@@ -62,7 +62,7 @@ std::list<float> Map::getCosineLine(float z) {
 	if (z <= 0)
 		return (std::list<float> {0});
 
-	for (float i = 0; i < M_PI; i+= M_PI / (this->mapSizeX/4)) {
+	for (float i = 0; i < M_PI; i += M_PI / (this->mapSizeX/4)) {
 		l.push_back(mylib::ratiof(z, 1.2, (std::cos(i)/2+0.5)));
 	}
 	return (l);
@@ -122,6 +122,38 @@ float 	Map::getZMax() const{
 		}
 	}
 	return (maxSize);
+}
+void Map::getcuve()
+{
+	std::vector<float>	push;
+
+	for (int y = 1; y != mapSizeY -1; y++)
+	{
+		for (int x = 1; x != mapSizeX-1 ; x++)
+		{
+			float z = this->map[x][y];
+
+			float z1 = this->map[x+1][y];
+			float z2 = this->map[x][y+1];
+			float z3 = this->map[x-1][y];
+			float z4 = this->map[x][y-1];
+			float z5 = this->map[x+1][y+1];
+			float z6 = this->map[x+1][y-1];
+			float z7 = this->map[x-1][y+1];
+			float z8 = this->map[x-1][y-1];
+
+			if (z <= z1 && z <= z2 && z <= z3 && z <= z4 && z <= z5 && z <= z6 && z <= z7 && z <= z8)
+			{
+				push.push_back(x);
+				push.push_back(y);
+				push.push_back(this->map[x][y]);
+				std::cout<<x<<y<<" a "<<std::endl;
+				this->cuve.push_back(push);
+			}
+
+		}
+	}
+	// exit(0);
 }
 
 void	Map::assignMap(Vector v) {
